@@ -1,3 +1,4 @@
+import EmptyBox from "@/components/shared/initial-data-box/empty-box"
 import { Button } from "@/components/ui/button"
 import { useGet } from "@/hooks/useGet"
 import { useRequest } from "@/hooks/useRequest"
@@ -75,7 +76,7 @@ export default function Basket() {
                     <span className="text-muted-foreground">
                         {store?.length} {t("maxsulot")}
                     </span>
-                :   `${t("bo'sh")}`}
+                :   ""}
             </h2>
 
             <div className="flex flex-col gap-4">
@@ -85,11 +86,7 @@ export default function Basket() {
                             <BasketCard key={product.id} product={product} />
                         </Fade>
                     ))}
-                    {!store?.length && (
-                        <div className="py-20 text-center text-muted-foreground">
-                            {t("Savatingiz bo'sh")}
-                        </div>
-                    )}
+                    {!store?.length && <EmptyBox />}
                 </Loading>
             </div>
 
