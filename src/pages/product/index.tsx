@@ -45,14 +45,14 @@ export default function Product() {
         return d?.products?.sort((a, b) => a.price - b.price)[0]
     }, [d])
 
-    useEffect(() => {
-        navigate({
-            search: {
-                color: minPriceProduct?.color,
-                // option: minPriceProduct?.option,
-            } as any,
-        })
-    }, [d])
+    // useEffect(() => {
+    //     navigate({
+    //         search: {
+    //             color: minPriceProduct?.color,
+    //             // option: minPriceProduct?.option,
+    //         } as any,
+    //     })
+    // }, [d])
 
     return (
         <Loading loading={isLoading}>

@@ -4,7 +4,7 @@ const CompanyInfo = () => {
             <img
                 src="https://placehold.jp/500x500.png"
                 alt="company image"
-                className="rounded-3xl hidden md:block" 
+                className="rounded-3xl hidden md:block"
             />
             <div
                 style={{

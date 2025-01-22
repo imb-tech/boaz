@@ -6,7 +6,7 @@ import { useStore } from "@/hooks/useStore"
 import { formatMoney } from "@/lib/format-money"
 import Autoplay from "embla-carousel-autoplay"
 import { MinusIcon, PlusIcon, Trash2 } from "lucide-react"
-import { useRef } from "react"
+import { useMemo, useRef } from "react"
 
 import { Input } from "@/components/ui/input"
 import useCart from "@/hooks/useCart"
@@ -18,16 +18,20 @@ export default function BasketCard({ product }: { product: Product }) {
     const { store, setStore } = useStore<Product[]>("baskets")
     const { removeFromCart, addToCart } = useCart()
 
-    const [inputValue, setInputValue] = useState(product.count || 1)
+    const currentProduct = useMemo(() => {
+        return store?.find((p) => p.id === product.id)
+    }, [store, product])
+
+    const [inputValue, setInputValue] = useState(currentProduct?.count || 1)
 
     const handleQuantity = (action: "increase" | "decrease") => {
         if (!store) return
         if (action === "increase") {
-            setInputValue(product?.count + 1)
+            setInputValue(Number(currentProduct?.count) + 1)
             addToCart(product)
         } else {
             removeFromCart(product.id)
-            setInputValue(product?.count - 1)
+            setInputValue(Number(currentProduct?.count) - 1)
         }
     }
 
@@ -87,9 +91,7 @@ export default function BasketCard({ product }: { product: Product }) {
                                     <span className="text-sm text-muted-foreground">
                                         {product?.attr}:
                                     </span>
-                                    <p className="text-sm">
-                                        {product?.option}
-                                    </p>
+                                    <p className="text-sm">{product?.option}</p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <span className="text-sm text-muted-foreground">

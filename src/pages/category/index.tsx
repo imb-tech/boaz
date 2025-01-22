@@ -82,7 +82,9 @@ export default function Category() {
                                     ))}
                                 </div>
                             :   <div className="w-full flex justify-center py-10">
-                                    <p className="text-muted-foreground">ma'lumot topilmadi</p>
+                                    <p className="text-muted-foreground">
+                                        ma'lumot topilmadi
+                                    </p>
                                 </div>
                             }
                             <div

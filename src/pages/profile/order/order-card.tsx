@@ -138,9 +138,7 @@ export default function OrderCard({
                                         <p className="font-semibold text-muted-foreground">
                                             {t("Nomi")}:{" "}
                                         </p>
-                                        <p>
-                                            {c.product.name}
-                                        </p>
+                                        <p>{c.product.name}</p>
                                     </div>
                                     <div className="flex items-center gap-2 text-base">
                                         <p className="font-semibold text-muted-foreground">
@@ -171,9 +169,7 @@ export default function OrderCard({
                                         <p className="font-semibold text-muted-foreground">
                                             {t("qo'shimcha ma'lumot")}:{" "}
                                         </p>
-                                        <p>
-                                            {c.product.description}
-                                        </p>
+                                        <p>{c.product.description}</p>
                                     </div>
                                 </div>
                             </div>

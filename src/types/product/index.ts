@@ -41,10 +41,8 @@ type Product = BaseProduct & {
     products: ProductItem[]
 }
 
-
 type ProductWithBase = Product & {
     id: number
     base_product: Product
     color: ProductColor
 }
-

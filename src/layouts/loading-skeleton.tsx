@@ -25,7 +25,9 @@ const LoadingSkeleton = ({
                         {Array(length || 12)
                             .fill(0)
                             .map((_, i) => (
-                                <Card className="relative overflow-hidden rounded-2xl bg-white p-4 transition-shadow hover:shadow-lg border-none" key={i}>
+                                <Card
+                                    className="relative overflow-hidden rounded-2xl bg-white p-4 transition-shadow hover:shadow-lg border-none"
+                                    key={i}>
                                     {/* Product image skeleton */}
                                     <Skeleton className="aspect-square w-full rounded-lg bg-gray-200" />
 

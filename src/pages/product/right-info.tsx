@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
 export default function RightInfo({ d }: { d: Product }) {
-    const [inputValue, setInputValue] = useState(1)
+    const [inputValue, setInputValue] = useState(d.count || 1)
     const { store, setStore } = useStore<Product[] | any[]>("baskets")
     const { t } = useTranslation()
     const search: any = useSearch({ from: "/_main/products/$product" })
@@ -35,6 +35,9 @@ export default function RightInfo({ d }: { d: Product }) {
         s_p ? d?.products?.find((p) => p.id === s_p) : d?.products?.[0]
 
     const isInBasket = useMemo(() => {
+        setInputValue(
+            store?.find((b) => b.id === currentProduct?.id)?.count || 1,
+        )
         return store?.some(
             (b) => b.id === currentProduct?.id && b.color?.id === color,
         )

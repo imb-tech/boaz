@@ -65,6 +65,7 @@ export default function HomeProducts() {
                                     key={i}>
                                     <Fade damping={0.5} key={i}>
                                         <ProductCard
+                                            xit
                                             p={d}
                                             key={i}
                                             is_authenticated={!!username}

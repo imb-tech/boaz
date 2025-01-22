@@ -14,7 +14,7 @@ export default function RightOptions({
 }) {
     const search: any = useSearch({ from: "/_main/products/$product" })
     const { name } = useLanguage()
-    
+
     const lastData = useMemo(() => {
         return data?.map((d) => ({
             name: d.name,

@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next"
 
 export default function OneCategory() {
     const params = useParams({ from: "/_main/categories/$category" })
-    console.log(params.category)
     const { t } = useTranslation()
 
     const { data, ref, isFetchingNextPage, isLoading } =
@@ -28,7 +27,7 @@ export default function OneCategory() {
                 </h2>
                 <div className="w-full grid grid-cols-2 sm:grid-cols-[repeat(auto-fill,_minmax(14rem,_auto))] gap-2 sm:gap-4">
                     {data?.map((d, i: number) => (
-                        <Fade damping={0.5}  key={i}>
+                        <Fade damping={0.5} key={i}>
                             <ProductCard
                                 p={d}
                                 key={i}

@@ -12,21 +12,21 @@ import { Heart, Minus, ShoppingCart } from "lucide-react"
 import { useMemo } from "react"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
+import XitBadge from "../xit-badge"
 
 export default function ProductCard({
     p,
     isLikeds,
+    xit,
 }: {
     p: Product
     isLikeds?: boolean
     is_authenticated: boolean
+    xit?: boolean
 }) {
     const baskets = useStore<Product[]>("baskets")
     const { store: likeds, setStore: setLikeds } = useStore<number[]>("likeds")
     const { t } = useTranslation()
-
-    console.log(p);
-    
 
     const { post, isPending, remove } = useRequest()
     const { removeFromCart } = useCart()
@@ -85,6 +85,7 @@ export default function ProductCard({
                     onClick={toggleLiked}
                 />
                 <div className="relative w-full h-40 sm:h-[200px] flex items-center justify-center">
+                    {xit && <XitBadge className="absolute top-2 left-2" />}
                     <Link to={`/products/${p.id}`}>
                         <CustomImage
                             key={p.name}

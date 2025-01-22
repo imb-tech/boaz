@@ -27,7 +27,6 @@ export const useColumns = ({
         type: string
         parent_category: number
     }) {
-        console.log(data)
         const isConfirmed = await confirm({
             title: `${t("O'chirilsinmi")}?`,
         })
