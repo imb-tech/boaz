@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d1eeaa2a-6c5b-4363-bb21-c1b5b061cf5d/deploy-status)](https://app.netlify.com/sites/boaz-demo/deploys)
+
 # BOAZ - Marketplace
 - name: BOAZ
 - version: 1.0.0
