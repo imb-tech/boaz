@@ -1,19 +1,14 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 
-export function useStore<T = unknown>(key: string, initialValue?: T) {
+export function useContext<T = unknown>(key: string, initialValue?: T) {
     const queryClient = useQueryClient()
 
     const setStore = (data: T) => {
-        queryClient.setQueryData([key], data)
-        localStorage.setItem(key, JSON.stringify(data))
+        queryClient.setQueryData(["context" + key], data)
     }
 
     const { data: store } = useQuery<T>({
-        queryKey: [key],
-        queryFn: () => {
-            const data = localStorage.getItem(key)
-            return data ? JSON.parse(data) : null
-        },
+        queryKey: ["context" + key],
         staleTime: Infinity,
         gcTime: Infinity,
         refetchOnMount: false,
@@ -23,11 +18,18 @@ export function useStore<T = unknown>(key: string, initialValue?: T) {
         refetchIntervalInBackground: false,
     })
 
+    function remove() {
+        queryClient.removeQueries({
+            queryKey: ["context" + key],
+        })
+    }
+
     return {
         store:
             store ? store
             : initialValue ? initialValue
             : store,
         setStore,
+        remove
     }
 }

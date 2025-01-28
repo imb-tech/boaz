@@ -21,6 +21,7 @@ import { Route as MainProfileImport } from './routes/_main/profile'
 import { Route as MainBasketImport } from './routes/_main/basket'
 import { Route as AuthAuthImport } from './routes/_auth/auth'
 import { Route as MainCategoriesIndexImport } from './routes/_main/categories/index'
+import { Route as MainWarehouseProductImport } from './routes/_main/warehouse/$product'
 import { Route as MainProductsProductImport } from './routes/_main/products/$product'
 import { Route as MainCategoriesCategoryImport } from './routes/_main/categories/$category'
 
@@ -82,6 +83,12 @@ const MainCategoriesIndexRoute = MainCategoriesIndexImport.update({
   id: '/categories/',
   path: '/categories/',
   getParentRoute: () => MainRoute,
+} as any)
+
+const MainWarehouseProductRoute = MainWarehouseProductImport.update({
+  id: '/$product',
+  path: '/$product',
+  getParentRoute: () => MainWarehouseRoute,
 } as any)
 
 const MainProductsProductRoute = MainProductsProductImport.update({
@@ -170,6 +177,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MainProductsProductImport
       parentRoute: typeof MainImport
     }
+    '/_main/warehouse/$product': {
+      id: '/_main/warehouse/$product'
+      path: '/$product'
+      fullPath: '/warehouse/$product'
+      preLoaderRoute: typeof MainWarehouseProductImport
+      parentRoute: typeof MainWarehouseImport
+    }
     '/_main/categories/': {
       id: '/_main/categories/'
       path: '/categories'
@@ -192,10 +206,22 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface MainWarehouseRouteChildren {
+  MainWarehouseProductRoute: typeof MainWarehouseProductRoute
+}
+
+const MainWarehouseRouteChildren: MainWarehouseRouteChildren = {
+  MainWarehouseProductRoute: MainWarehouseProductRoute,
+}
+
+const MainWarehouseRouteWithChildren = MainWarehouseRoute._addFileChildren(
+  MainWarehouseRouteChildren,
+)
+
 interface MainRouteChildren {
   MainBasketRoute: typeof MainBasketRoute
   MainProfileRoute: typeof MainProfileRoute
-  MainWarehouseRoute: typeof MainWarehouseRoute
+  MainWarehouseRoute: typeof MainWarehouseRouteWithChildren
   MainIndexRoute: typeof MainIndexRoute
   MainCategoriesCategoryRoute: typeof MainCategoriesCategoryRoute
   MainProductsProductRoute: typeof MainProductsProductRoute
@@ -205,7 +231,7 @@ interface MainRouteChildren {
 const MainRouteChildren: MainRouteChildren = {
   MainBasketRoute: MainBasketRoute,
   MainProfileRoute: MainProfileRoute,
-  MainWarehouseRoute: MainWarehouseRoute,
+  MainWarehouseRoute: MainWarehouseRouteWithChildren,
   MainIndexRoute: MainIndexRoute,
   MainCategoriesCategoryRoute: MainCategoriesCategoryRoute,
   MainProductsProductRoute: MainProductsProductRoute,
@@ -219,11 +245,12 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthAuthRoute
   '/basket': typeof MainBasketRoute
   '/profile': typeof MainProfileRoute
-  '/warehouse': typeof MainWarehouseRoute
+  '/warehouse': typeof MainWarehouseRouteWithChildren
   '/admin/products': typeof AdminProductsLazyRoute
   '/': typeof MainIndexRoute
   '/categories/$category': typeof MainCategoriesCategoryRoute
   '/products/$product': typeof MainProductsProductRoute
+  '/warehouse/$product': typeof MainWarehouseProductRoute
   '/categories': typeof MainCategoriesIndexRoute
 }
 
@@ -232,11 +259,12 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthAuthRoute
   '/basket': typeof MainBasketRoute
   '/profile': typeof MainProfileRoute
-  '/warehouse': typeof MainWarehouseRoute
+  '/warehouse': typeof MainWarehouseRouteWithChildren
   '/admin/products': typeof AdminProductsLazyRoute
   '/': typeof MainIndexRoute
   '/categories/$category': typeof MainCategoriesCategoryRoute
   '/products/$product': typeof MainProductsProductRoute
+  '/warehouse/$product': typeof MainWarehouseProductRoute
   '/categories': typeof MainCategoriesIndexRoute
 }
 
@@ -247,11 +275,12 @@ export interface FileRoutesById {
   '/_auth/auth': typeof AuthAuthRoute
   '/_main/basket': typeof MainBasketRoute
   '/_main/profile': typeof MainProfileRoute
-  '/_main/warehouse': typeof MainWarehouseRoute
+  '/_main/warehouse': typeof MainWarehouseRouteWithChildren
   '/admin/products': typeof AdminProductsLazyRoute
   '/_main/': typeof MainIndexRoute
   '/_main/categories/$category': typeof MainCategoriesCategoryRoute
   '/_main/products/$product': typeof MainProductsProductRoute
+  '/_main/warehouse/$product': typeof MainWarehouseProductRoute
   '/_main/categories/': typeof MainCategoriesIndexRoute
 }
 
@@ -267,6 +296,7 @@ export interface FileRouteTypes {
     | '/'
     | '/categories/$category'
     | '/products/$product'
+    | '/warehouse/$product'
     | '/categories'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -279,6 +309,7 @@ export interface FileRouteTypes {
     | '/'
     | '/categories/$category'
     | '/products/$product'
+    | '/warehouse/$product'
     | '/categories'
   id:
     | '__root__'
@@ -292,6 +323,7 @@ export interface FileRouteTypes {
     | '/_main/'
     | '/_main/categories/$category'
     | '/_main/products/$product'
+    | '/_main/warehouse/$product'
     | '/_main/categories/'
   fileRoutesById: FileRoutesById
 }
@@ -355,7 +387,10 @@ export const routeTree = rootRoute
     },
     "/_main/warehouse": {
       "filePath": "_main/warehouse.tsx",
-      "parent": "/_main"
+      "parent": "/_main",
+      "children": [
+        "/_main/warehouse/$product"
+      ]
     },
     "/admin/products": {
       "filePath": "admin/products.lazy.tsx"
@@ -371,6 +406,10 @@ export const routeTree = rootRoute
     "/_main/products/$product": {
       "filePath": "_main/products/$product.tsx",
       "parent": "/_main"
+    },
+    "/_main/warehouse/$product": {
+      "filePath": "_main/warehouse/$product.tsx",
+      "parent": "/_main/warehouse"
     },
     "/_main/categories/": {
       "filePath": "_main/categories/index.tsx",

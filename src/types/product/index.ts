@@ -20,9 +20,11 @@ type BaseProduct = {
     option: string
 }
 
-type CartItems = {
+type CartItem = {
     id: BaseProduct["id"]
     count: number
+    is_best?: boolean
+    orginal_product: number
 }
 
 type ProductItem = BaseProduct & {

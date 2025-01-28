@@ -54,7 +54,7 @@ export default function RightOptions({
     return (
         lastData &&
         lastData?.length > 1 && (
-            <div className="w-full p-4 sm:p-6 rounded-xl space-y-4 bg-white border border-primary">
+            <div className="w-full p-2 sm:p-4 rounded-xl space-y-4 bg-white border border-primary">
                 <div>
                     <p className="pb-2">
                         {name === "name_uz" ? "Rangi" : "رنگ"}:{" "}
@@ -62,7 +62,7 @@ export default function RightOptions({
                             {lastData?.find((d) => d.id === search.color)?.name}
                         </span>
                     </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex gap-2">
                         {lastData?.map((d, i: number) => {
                             const isDisabled = !currentProducts2?.find(
                                 (f) => f.color === d.id,
@@ -91,7 +91,7 @@ export default function RightOptions({
                                     )}>
                                     <div
                                         className={cn(
-                                            "w-16 h-20 border-2 rounded cursor-pointer p-0.5",
+                                            "w-14 h-16 border-2 rounded cursor-pointer p-0.5",
                                             search.color === d.id &&
                                                 "border-primary",
                                         )}>
@@ -130,7 +130,10 @@ export default function RightOptions({
                                                 isDisabled ? undefined : (
                                                     search.color
                                                 ),
-                                            option: d,
+                                            option:
+                                                search?.option === d ?
+                                                    undefined
+                                                :   d,
                                         } as any
                                     }
                                     key={i}

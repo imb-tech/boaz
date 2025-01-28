@@ -13,7 +13,7 @@ import useCart from "@/hooks/useCart"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
-export default function BasketCard({ product }: { product: Product }) {
+export default function BasketCard({ product }: { product: ProductWithBase }) {
     const plugin = useRef(Autoplay({ delay: 1000 }))
     const { store, setStore } = useStore<Product[]>("baskets")
     const { removeFromCart, addToCart } = useCart()
@@ -28,9 +28,9 @@ export default function BasketCard({ product }: { product: Product }) {
         if (!store) return
         if (action === "increase") {
             setInputValue(Number(currentProduct?.count) + 1)
-            addToCart(product)
+            addToCart(product.base_product.id, product.id)
         } else {
-            removeFromCart(product.id)
+            removeFromCart(product.base_product.id)
             setInputValue(Number(currentProduct?.count) - 1)
         }
     }
@@ -52,15 +52,6 @@ export default function BasketCard({ product }: { product: Product }) {
             }
             return item
         })
-        setStore(newStore)
-    }
-
-    const handleRemove = () => {
-        if (!store) return
-        const newStore = store.filter(
-            (item) =>
-                item.id !== product.id || item.color?.id !== product?.color?.id,
-        )
         setStore(newStore)
     }
 

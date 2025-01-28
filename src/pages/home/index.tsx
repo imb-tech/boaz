@@ -1,3 +1,4 @@
+import HomeSlider from "@/components/shared/home-slider"
 import { useInfiniteGet } from "@/hooks/useInfiniteGet"
 import { useSearch } from "@tanstack/react-router"
 import { format } from "date-fns"
@@ -33,6 +34,17 @@ export default function Home() {
                 link="most-sold"
             />
 
+            <HomeSlider
+                images={[
+                    "https://tools-api.webcrumbs.org/image-placeholder/280/180/nature/1",
+                    "https://tools-api.webcrumbs.org/image-placeholder/280/180/nature/2",
+                    "https://tools-api.webcrumbs.org/image-placeholder/280/180/nature/3",
+                    "https://tools-api.webcrumbs.org/image-placeholder/280/180/nature/8",
+                    "https://tools-api.webcrumbs.org/image-placeholder/280/180/nature/5",
+                    "https://tools-api.webcrumbs.org/image-placeholder/280/180/nature/6",
+                    "https://tools-api.webcrumbs.org/image-placeholder/280/180/nature/7",
+                ]}
+            />
             <CompanyInfo />
         </div>
     )

@@ -1,5 +1,6 @@
 import EmptyBox from "@/components/shared/initial-data-box/empty-box"
 import { Button } from "@/components/ui/button"
+import useCart from "@/hooks/useCart"
 import { useGet } from "@/hooks/useGet"
 import { useRequest } from "@/hooks/useRequest"
 import { useStore } from "@/hooks/useStore"
@@ -12,20 +13,21 @@ import { toast } from "sonner"
 import BasketCard from "./basket-card"
 
 export default function Basket() {
-    const { store: cart, setStore } = useStore<CartItems[]>("baskets")
-    const { post, isPending, isIdle } = useRequest()
+    const { setStore } = useStore<CartItem[]>("baskets")
+    const { cart } = useCart()
+    const { post, isPending } = useRequest()
     const { data, isLoading } = useGet<{
         results: ProductWithBase[]
     }>(
         "product/",
         {
-            ids: cart?.map((p) => p.id).join(",") || "",
+            ids: cart?.map((p) => p.orginal_product).join(",") || "",
         },
         {
             enabled: !!cart && cart?.length > 0,
         },
     )
-
+    
     const store = useMemo(() => {
         return (
             data?.results?.map((el) => ({

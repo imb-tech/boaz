@@ -9,12 +9,12 @@ import { formatMoney } from "@/lib/format-money"
 import { cn } from "@/lib/utils"
 import { Link } from "@tanstack/react-router"
 import { Heart, Minus, ShoppingCart } from "lucide-react"
-import { useMemo } from "react"
+import { memo, useMemo } from "react"
 import { useTranslation } from "react-i18next"
-import { toast } from "sonner"
+import DetailModal from "../detail-modal"
 import XitBadge from "../xit-badge"
 
-export default function ProductCard({
+function ProductCard({
     p,
     isLikeds,
     xit,
@@ -24,20 +24,24 @@ export default function ProductCard({
     is_authenticated: boolean
     xit?: boolean
 }) {
-    const baskets = useStore<Product[]>("baskets")
     const { store: likeds, setStore: setLikeds } = useStore<number[]>("likeds")
-    const { t } = useTranslation()
 
+    const { t } = useTranslation()
     const { post, isPending, remove } = useRequest()
-    const { removeFromCart } = useCart()
+    const { removeFromCart, addToCart, cart: baskets } = useCart()
 
     const isLiked =
         isLikeds ||
         useMemo(() => {
             return likeds?.some((l) => l === p.id)
         }, [likeds])
+
+    const basketCount = useMemo(() => {
+        return baskets?.find((b) => b.id === p.id)?.count || 0
+    }, [baskets])
+
     const isInBasket = useMemo(() => {
-        return baskets.store?.some((b) => b.id === p.id)
+        return baskets?.some((b) => b.id === p.id)
     }, [baskets])
 
     const toggleLiked = () => {
@@ -51,18 +55,7 @@ export default function ProductCard({
     }
 
     const toggleBasket = () => {
-        const updatedBaskets =
-            isInBasket ?
-                baskets.store?.map((b) =>
-                    b.id === p.id ? { ...b, count: (b.count || 0) + 1 } : b,
-                )
-            :   [...(baskets.store || []), { ...p, count: 1 }]
-
-        baskets.setStore(updatedBaskets || [])
-        if (!isInBasket) {
-            const successMessage = `${p.name}  ${t("savatchaga qo'shildi")}`
-            toast.success(successMessage)
-        }
+        addToCart(p.id, p.id)
     }
 
     return (
@@ -146,21 +139,28 @@ export default function ProductCard({
                                     onClick={() => removeFromCart(p.id)}
                                 />
                             )}
-                            <Button
-                                icon={
-                                    <ShoppingCart className="w-4 sm:w-[18px]" />
-                                }
-                                variant="secondary"
-                                className="w-7 h-7 sm:w-10 sm:h-10"
-                                onClick={toggleBasket}
-                            />
+                            {isInBasket ?
+                                <Button
+                                    icon={
+                                        <ShoppingCart className="w-4 sm:w-[18px]" />
+                                    }
+                                    variant="secondary"
+                                    className="w-7 h-7 sm:w-10 sm:h-10"
+                                    onClick={toggleBasket}
+                                />
+                            :   <DetailModal product={p}>
+                                    <Button
+                                        icon={
+                                            <ShoppingCart className="w-4 sm:w-[18px]" />
+                                        }
+                                        variant="secondary"
+                                        className="w-7 h-7 sm:w-10 sm:h-10"
+                                    />
+                                </DetailModal>
+                            }
                             {isInBasket && (
                                 <Badge className="absolute -top-2 right-1 sm:-right-2 px-1 sm:px-2 py-0 sm:py-0.5 text-[10px] sm:p-auto sm:text-xs">
-                                    {
-                                        baskets.store?.filter(
-                                            (b) => b.id === p.id,
-                                        )[0].count
-                                    }
+                                    {basketCount}
                                 </Badge>
                             )}
                         </div>
@@ -170,3 +170,10 @@ export default function ProductCard({
         </Card>
     )
 }
+
+export default memo(ProductCard, (prevProps, nextProps) => {
+    return (
+        prevProps.p.id === nextProps.p.id &&
+        prevProps.isLikeds === nextProps.isLikeds
+    )
+})

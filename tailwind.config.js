@@ -1,8 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-import tailwindcssAnimate from "tailwindcss-animate";
+import tailwindcssAnimate from "tailwindcss-animate"
 
-export const darkMode = ["class"];
-export const content = ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"];
+export const darkMode = ["class"]
+export const content = ["./index.html", "./src/**/*.{ts,tsx,js,jsx}"]
 export const theme = {
     extend: {
         zIndex: {
@@ -76,11 +76,21 @@ export const theme = {
                 "70%": { transform: "translateX(10px)" },
                 "100%": { transform: "translateX(0)" },
             },
+            marquee: {
+                "0%": { transform: "translateX(0%)" },
+                "100%": { transform: "translateX(-100%)" },
+            },
+            marquee2: {
+                "0%": { transform: "translateX(100%)" },
+                "100%": { transform: "translateX(0%)" },
+            },
         },
         animation: {
             "accordion-down": "accordion-down 0.2s ease-out",
             "accordion-up": "accordion-up 0.2s ease-out",
             mover: "mover 1s infinite ease-in-out",
+            marquee: "marquee 25s linear infinite",
+            marquee2: "marquee2 25s linear infinite",
         },
         screens: {
             sm: "400px",
@@ -89,5 +99,5 @@ export const theme = {
             lg_md: "800px",
         },
     },
-};
-export const plugins = [tailwindcssAnimate];
+}
+export const plugins = [tailwindcssAnimate]

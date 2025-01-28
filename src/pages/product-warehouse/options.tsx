@@ -12,7 +12,7 @@ export default function RightOptions({
     attr: Product["attr"]
     products: Product["products"]
 }) {
-    const search: any = useSearch({ strict: false })
+    const search: any = useSearch({ from: "/_main/warehouse/$product" })
     const { name } = useLanguage()
 
     const lastData = useMemo(() => {

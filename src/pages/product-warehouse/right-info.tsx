@@ -19,7 +19,7 @@ export default function RightInfo({ d }: { d: Product }) {
     const [inputValue, setInputValue] = useState(d.count || 1)
     const { store, setStore } = useStore<Product[] | any[]>("baskets")
     const { t } = useTranslation()
-    const search: any = useSearch({ strict: false })
+    const search: any = useSearch({ from: "/_main/warehouse/$product" })
 
     const s_p = useMemo(() => {
         return d?.products?.find((f) => {

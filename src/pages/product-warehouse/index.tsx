@@ -9,9 +9,9 @@ import ProductCarousel from "./carousel"
 import RightOptions from "./options"
 import RightInfo from "./right-info"
 
-export default function Product() {
-    const params = useParams({ from: "/_main/products/$product" })
-    const search: any = useSearch({ from: "/_main/products/$product" })
+export default function ProductWarehouse() {
+    const params = useParams({ from: "/_main/warehouse/$product" })
+    const search: any = useSearch({ from: "/_main/warehouse/$product" })
     const navigate = useNavigate()
 
     const { data: d, isLoading } = useGet<Product>(
@@ -58,13 +58,6 @@ export default function Product() {
                     // option: minPriceProduct?.option,
                 } as any,
             })
-        } else {
-            navigate({
-                search: {
-                    color: undefined,
-                    option: undefined,
-                } as any,
-            })
         }
     }, [d])
 
@@ -92,13 +85,11 @@ export default function Product() {
                                 />
                             )}
                             <RightInfo d={d as Product} />
-                            {d?.colors && d?.colors.length < 2 && (
-                                <div className="p-3 bg-background rounded-xl w-full h-full">
-                                    <p className="text-sm sm:text-base text-muted-foreground">
-                                        {d.description}
-                                    </p>
-                                </div>
-                            )}
+                            {d?.colors && d?.colors.length < 2 && <div className="p-3 bg-background rounded-xl w-full h-full">
+                                <p className="text-sm sm:text-base text-muted-foreground">
+                                    {d.description}
+                                </p>
+                            </div>}
                         </div>
                     </div>
                     {d?.colors && d?.colors.length > 1 && (

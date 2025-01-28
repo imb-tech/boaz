@@ -1,57 +1,67 @@
+import { useUser } from "@/constants/useUser"
+import { useLocation } from "@tanstack/react-router"
 import { useTranslation } from "react-i18next"
-import { toast } from "sonner"
 import { useStore } from "./useStore"
 
 export default function useCart() {
-    const { store, setStore } = useStore<Product[] | undefined>("baskets")
+    const { store, setStore } = useStore<CartItem[] | undefined>("baskets")
     const { t } = useTranslation()
+    const pathname = useLocation().pathname
+    const { is_best_client } = useUser()
 
-    const findProductById = (id: Product["id"]) =>
+    const findProductById = (id: Product["id"]): CartItem | undefined =>
         store?.find((p) => p.id === id)
 
-    const updateProductCount = (
-        productId: Product["id"],
-        increment: number,
-    ) => {
+    function updateProductCount(id: Product["id"], interval: number) {
+        const item = findProductById(id)
+        if (item?.count === 1 && interval === -1) {
+            // setStore(store?.filter((p) => p.id !== id))
+            return store?.filter((p) => p.id !== id)
+        }
+
         return store?.map((product) =>
-            product.id === productId ?
-                { ...product, count: (product.count || 0) + increment }
+            product.id === id ?
+                { ...product, count: (product.count || 0) + interval }
             :   product,
         )
     }
 
-    function addToCart(product: Product) {
-        const existingProduct = findProductById(product.id)
-
-        const updatedBaskets =
-            existingProduct ?
-                updateProductCount(product.id, 1)
-            :   [...(store || []), { ...product, count: 1 }]
-
-        setStore(updatedBaskets || [])
-
-        if (!existingProduct) {
-            toast.success(`${product.name} ${t("savatchaga qo'shildi")}`)
-        }
+    function increment(id: Product["id"]) {
+        setStore(updateProductCount(id, 1))
     }
 
-    function removeFromCart(
-        productId: Product["id"],
-        removeAll: boolean = false,
+    function decrement(id: Product["id"]) {
+        setStore(updateProductCount(id, -1))
+    }
+
+    function inCart(id: number) {
+        return (
+            store?.some((p) => p.id === id) &&
+            Number(store?.find((p) => p.id === id)?.count || 1) > 0
+        )
+    }
+
+    function addToCart(
+        baseProduct: Product["id"],
+        orginal_product: Product["id"],
     ) {
-        if (removeAll) {
-            return setStore([])
+        if (inCart(baseProduct)) {
+            return increment(baseProduct)
         }
-        const existingProduct = findProductById(productId)
 
-        if (!existingProduct) return
+        return setStore([
+            ...(store || []),
+            { id: baseProduct, count: 1, orginal_product },
+        ])
+    }
 
-        const updatedBaskets =
-            existingProduct.count === 1 ?
-                store?.filter((product) => product.id !== productId)
-            :   updateProductCount(productId, -1)
+    function removeFromCart(baseProduct: Product["id"], removeItem?: boolean) {
+        if (!store) return
+        if (removeItem) return setStore([])
 
-        setStore(updatedBaskets || [])
+        if (inCart(baseProduct)) {
+            return decrement(baseProduct)
+        }
     }
 
     return {
