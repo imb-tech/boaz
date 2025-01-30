@@ -1,34 +1,29 @@
-import ProductCard from "@/components/shared/product-card"
+import ProductCard2 from "@/components/shared/product-card/product-card"
 import {
     Carousel,
     CarouselContent,
     CarouselItem,
 } from "@/components/ui/carousel"
-import Loader from "@/components/ui/loader"
 import { useUser } from "@/constants/useUser"
-import { useInfiniteGet } from "@/hooks/useInfiniteGet"
+import { useGet } from "@/hooks/useGet"
+import { useRequest } from "@/hooks/useRequest"
 import LoadingSkeleton from "@/layouts/loading-skeleton"
-import { Link, useSearch } from "@tanstack/react-router"
-import { format } from "date-fns"
+import { Link } from "@tanstack/react-router"
 import Autoplay from "embla-carousel-autoplay"
 import { ChevronRight } from "lucide-react"
+import { useEffect } from "react"
 import { Fade } from "react-awesome-reveal"
 import { useTranslation } from "react-i18next"
 
+type ProductsResponse = {
+    count: number
+    products: Product2[]
+}
+
 export default function HomeProducts() {
     const { t } = useTranslation()
-    const sevenDaysAgo = format(
-        new Date(new Date().setDate(new Date().getDate() - 7)),
-        "yyyy-MM-dd",
-    )
 
-    const search = useSearch({ from: "__root__" })
-
-    const { data, hasNextPage, ref, isFetchingNextPage, isLoading } =
-        useInfiniteGet<Product>(
-            "base-product/?created_at_from=" + sevenDaysAgo,
-            search,
-        )
+    const { data, isLoading } = useGet<ProductsResponse | undefined>('products?limit=12&offset=0')
 
     const { username } = useUser()
 
@@ -58,13 +53,13 @@ export default function HomeProducts() {
                         }),
                     ]}>
                     <CarouselContent className="flex items-center">
-                        {data &&
-                            data?.map((d, i: number) => (
+                        {data?.products &&
+                            data?.products?.map((d, i: number) => (
                                 <CarouselItem
                                     className="basis-full xmd:basis-1/2 md:basis-1/3 xl:basis-1/5 2xl:basis-1/5"
                                     key={i}>
                                     <Fade damping={0.5} key={i}>
-                                        <ProductCard
+                                        <ProductCard2
                                             xit
                                             p={d}
                                             key={i}
@@ -73,7 +68,7 @@ export default function HomeProducts() {
                                     </Fade>
                                 </CarouselItem>
                             ))}
-                        {hasNextPage && (
+                        {/* {hasNextPage && (
                             <CarouselItem
                                 className="w-0"
                                 ref={hasNextPage ? ref : undefined}>
@@ -83,7 +78,7 @@ export default function HomeProducts() {
                                     </div>
                                 )}
                             </CarouselItem>
-                        )}
+                        )} */}
                     </CarouselContent>
                 </Carousel>
             </div>

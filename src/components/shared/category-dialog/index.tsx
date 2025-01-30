@@ -3,7 +3,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { useGet } from "@/hooks/useGet"
+import { useRequest } from "@/hooks/useRequest"
 import { cn } from "@/lib/utils"
 import { CategoryWithChildren } from "@/types/category"
 import { PopoverClose } from "@radix-ui/react-popover"
@@ -15,12 +15,22 @@ type Props = {
     children: React.ReactNode
 }
 
+type CategoryResponse = {
+    count: number
+    categories: CategoryItem[]
+}
+
 export default function CategoryDialog({ children }: Props) {
     const [selectedCategory, setSelectedCategory] =
-        React.useState<CategoryWithChildren | null>(null)
+        React.useState<CategoryItem | null>(null)
 
-    const { data: categories } =
-        useGet<CategoryWithChildren[]>("parent-category/")
+    const { post, data: categoriesData } = useRequest<CategoryResponse>()
+
+    React.useEffect(() => {
+        post("", {
+            path: "v2/category?limit=10&page=1&search=&is_deleted=false",
+        })
+    }, [])
 
     const navigate = useNavigate()
 
@@ -35,7 +45,7 @@ export default function CategoryDialog({ children }: Props) {
                     {/* Categories */}
                     <div className="w-[280px] bg-white rounded-xl">
                         <div className="flex flex-col p-2">
-                            {categories?.map((category) => (
+                            {categoriesData?.categories?.map((category) => (
                                 <PopoverClose key={category.id}>
                                     <div
                                         onMouseEnter={() =>
@@ -61,10 +71,10 @@ export default function CategoryDialog({ children }: Props) {
                                             })
                                         }>
                                         <div className="flex items-center gap-2">
-                                            <img
+                                            {/* <img
                                                 src={category.image || ""}
                                                 width={28}
-                                            />
+                                            /> */}
                                             {category.name}
                                         </div>
                                         <ChevronRight className="h-4 w-4" />
@@ -81,12 +91,12 @@ export default function CategoryDialog({ children }: Props) {
                                     {selectedCategory.name}
                                 </h3>
                                 <div className="grid grid-cols-2 gap-1">
-                                    {categories
+                                    {categoriesData?.categories
                                         ?.find(
                                             (cat) =>
                                                 cat.id === selectedCategory.id,
                                         )
-                                        ?.children.map((item) => (
+                                        ?.subRows.map((item) => (
                                             <div
                                                 className="space-y-2"
                                                 key={item.id}>

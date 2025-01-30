@@ -12,3 +12,17 @@ type CategoryResponse = {
     previous: string | null
     results: Category[]
 }
+
+type CategoryItem = {
+    id: string
+    name: string
+    parent_id: string
+    all_parent_ids: null | string[]
+    subRows: CategoryItem[]
+    product_count: number
+    company_id: string
+    is_open: boolean
+    level_number: number
+    from_parent: boolean
+    super_parent_id: string
+}

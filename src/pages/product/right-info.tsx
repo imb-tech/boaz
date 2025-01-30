@@ -15,35 +15,21 @@ import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
-export default function RightInfo({ d }: { d: Product }) {
-    const [inputValue, setInputValue] = useState(d.count || 1)
-    const { store, setStore } = useStore<Product[] | any[]>("baskets")
+const id = "fac0d3fd-4d70-4082-88f4-2da77752f071"
+
+export default function RightInfo({ d }: { d: Product2 }) {
+    const [inputValue, setInputValue] = useState(1)
+    const { store, setStore } = useStore<Product[] | any[]>('cart')
     const { t } = useTranslation()
     const search: any = useSearch({ strict: false })
 
-    const s_p = useMemo(() => {
-        return d?.products?.find((f) => {
-            if (d?.products?.length > 1) {
-                return f.color === search.color
-            } else if (d?.products?.length === 1) {
-                return true
-            }
-            return true
-        })?.id
-    }, [search])
-
     const color = search.color || undefined
-    const currentProduct =
-        s_p ? d?.products?.find((p) => p.id === s_p) : d?.products?.[0]
+    const currentProduct = d
 
     const isInBasket = useMemo(() => {
-        setInputValue(
-            store?.find((b) => b.id === currentProduct?.id)?.count || 1,
-        )
-        return store?.some(
-            (b) => b.id === currentProduct?.id && b.color?.id === color,
-        )
-    }, [store, d, s_p, color])
+        setInputValue(store?.find((b) => b.id === d?.id)?.count || 1)
+        return store?.some((b) => b.id === d?.id && b.color?.id === color)
+    }, [store, d, color])
 
     const toggleBasket = () => {
         const updatedBaskets =
@@ -63,13 +49,6 @@ export default function RightInfo({ d }: { d: Product }) {
                     {
                         ...currentProduct,
                         count: 1,
-                        color: d?.colors?.find((d) => d.id === color),
-                        main_image:
-                            d?.colors?.find((d) => d.id === color)?.images?.[0]
-                                ?.image || d?.main_image,
-                        attr: d?.attr,
-                        name: d.name,
-                        desciption: d.description,
                     },
                 ]
         setStore(updatedBaskets || [])
@@ -121,19 +100,21 @@ export default function RightInfo({ d }: { d: Product }) {
     }
 
     const discountedPrice =
-        s_p ?
-            d?.products?.find((f) => f.id === s_p)?.discounted_price
-        :   d?.discounted_price
+        d?.shop_prices?.find((f) => f.shop_id === id)?.retail_price || 0
 
     const lastPrice =
-        s_p ? d?.products?.find((f) => f.id === s_p)?.price : d?.price
+        d?.shop_prices?.find((f) => f.shop_id === id)?.retail_price || 0
 
     const dis = formatMoney(discountedPrice, "", true, t)
     const price = formatMoney(lastPrice, "", true, t)
 
+    const count =
+        d?.shop_measurement_values?.find((f) => f.shop_id === id)
+            ?.active_measurement_value || 0
+
     return (
         <div className="flex flex-col justify-between items-start gap-6 md:gap-8 w-full h-full lg:max-w-md border-2 p-4 sm:p-6 rounded-xl relative bg-white">
-            {!!discountedPrice && (
+            {lastPrice - discountedPrice > 0 && (
                 <p className="text-xs bg-primary text-white px-4 py-1 absolute top-0 right-0 translate-x-[1px] -translate-y-0.5 rounded-bl-xl rounded-tr-xl">
                     -
                     {Math.round(
@@ -148,7 +129,7 @@ export default function RightInfo({ d }: { d: Product }) {
                         <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">
                             {dis}
                         </h2>
-                        {!!d?.discounted_price && (
+                        {lastPrice - discountedPrice > 0 && (
                             <p className="text-sm sm:text-base line-through text-muted-foreground">
                                 {price}
                             </p>
@@ -168,11 +149,7 @@ export default function RightInfo({ d }: { d: Product }) {
                     />
                     <p>
                         {t("in_stock", {
-                            count:
-                                s_p ?
-                                    d?.products?.find((f) => f.id === s_p)
-                                        ?.stock
-                                :   d?.stock,
+                            count,
                         })}
                     </p>
                 </div>
@@ -184,10 +161,7 @@ export default function RightInfo({ d }: { d: Product }) {
                     />
                     <p>
                         {t("in_sold", {
-                            count2:
-                                s_p ?
-                                    d?.products?.find((f) => f.id === s_p)?.sold
-                                :   d?.sold,
+                            count2: Math.floor(count / 2),
                         })}
                     </p>
                 </div>
@@ -224,16 +198,14 @@ export default function RightInfo({ d }: { d: Product }) {
                             <Button
                                 icon={<ShoppingCart width={18} />}
                                 onClick={() => toggleBasket()}
-                                className="w-full"
-                                disabled={!s_p}>
+                                className="w-full">
                                 {t("Savatchaga qo'shish")}
                             </Button>
                             <Button
                                 icon={<CheckCheck width={18} />}
                                 onClick={() => toggleBasket()}
                                 className="w-full"
-                                variant="secondary"
-                                disabled={!s_p}>
+                                variant="secondary">
                                 {t("bittada xarid")}
                             </Button>
                         </div>

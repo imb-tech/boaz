@@ -13,24 +13,26 @@ import useCart from "@/hooks/useCart"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 
-export default function BasketCard({ product }: { product: ProductWithBase }) {
+const id = "fac0d3fd-4d70-4082-88f4-2da77752f071"
+
+export default function BasketCard({ product }: { product: CartItem }) {
     const plugin = useRef(Autoplay({ delay: 1000 }))
-    const { store, setStore } = useStore<Product[]>("baskets")
-    const { removeFromCart, addToCart } = useCart()
+    const { setStore } = useStore<Product2[]>("cart")
+    const { removeFromCart, addToCart, cart } = useCart()
 
     const currentProduct = useMemo(() => {
-        return store?.find((p) => p.id === product.id)
-    }, [store, product])
+        return cart?.find((p) => p.id === product.id)
+    }, [cart, product])
 
     const [inputValue, setInputValue] = useState(currentProduct?.count || 1)
 
     const handleQuantity = (action: "increase" | "decrease") => {
-        if (!store) return
+        if (!cart) return
         if (action === "increase") {
             setInputValue(Number(currentProduct?.count) + 1)
-            addToCart(product.base_product.id, product.id)
+            addToCart(product)
         } else {
-            removeFromCart(product.base_product.id)
+            removeFromCart(product.id)
             setInputValue(Number(currentProduct?.count) - 1)
         }
     }
@@ -45,28 +47,38 @@ export default function BasketCard({ product }: { product: ProductWithBase }) {
     }
 
     const handleInputBlur = () => {
-        if (!store) return
-        const newStore = store.map((item) => {
+        if (!cart) return
+        const newcart = cart.map((item) => {
             if (item.id === product.id) {
                 return { ...item, count: inputValue }
             }
             return item
         })
-        setStore(newStore)
+        setStore(newcart)
     }
 
     const { t } = useTranslation()
+
+    const price = useMemo(() => {
+        return (
+            product.shop_prices?.find((p) => p.shop_id === id)?.retail_price ||
+            0
+        )
+    }, [product])
 
     return (
         <Card key={product.id} className="p-2 sm:p-4 shadow-none border-none">
             <CardContent className="p-0">
                 <div className="flex items-center gap-4 w-full justify-between">
-                    <SeeInView url={product?.main_image} className="w-max">
+                    <SeeInView
+                        url={product?.main_image_url_full}
+                        className="w-max">
                         <CustomImage
-                            src={product?.main_image}
+                            src={product?.main_image_url_full}
                             alt="product image"
                             height={120}
                             width={120}
+                            contain
                             onMouseEnter={() => plugin.current.play()}
                             onMouseLeave={() => plugin.current.stop()}
                             className="rounded-md !w-24 sm:!w-28"
@@ -80,36 +92,31 @@ export default function BasketCard({ product }: { product: ProductWithBase }) {
                             <div className="flex flex-col">
                                 <div className="flex items-center gap-2">
                                     <span className="text-sm text-muted-foreground">
-                                        {product?.attr}:
+                                        {/* {product?.attribute}: */}
+                                        Tanlanmagan
                                     </span>
-                                    <p className="text-sm">{product?.option}</p>
+                                    <p className="text-sm">
+                                        {/* {product?.option} */}
+                                        Tanlanmagan
+                                    </p>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <span className="text-sm text-muted-foreground">
                                         {t("Rangi")}:
                                     </span>
                                     <p className="text-sm">
-                                        {product?.color?.name}
+                                        Tanlanmagan
+                                        {/* {product?.color?.name} */}
                                     </p>
                                 </div>
                             </div>
                             <div className="hidden md:flex items-center gap-6">
                                 <div className="flex flex-col">
                                     <p className="font-medium text-base sm:text-lg">
-                                        {formatMoney(
-                                            product.discounted_price,
-                                            "",
-                                            true,
-                                            t,
-                                        )}
+                                        {formatMoney(price, "", true, t)}
                                     </p>
                                     <span className="line-through text-sm text-muted-foreground">
-                                        {formatMoney(
-                                            product.price,
-                                            "",
-                                            true,
-                                            t,
-                                        )}
+                                        {formatMoney(price, "", true, t)}
                                     </span>
                                 </div>
                                 <div className="flex xsm:max-sm:max-w-[21vh] items-center gap-2 sm:max-md:gap-1 xsm:max-sm:gap-1">
@@ -144,7 +151,7 @@ export default function BasketCard({ product }: { product: ProductWithBase }) {
                                         variant="ghost"
                                         size="icon"
                                         onClick={() =>
-                                            removeFromCart(product.id, true)
+                                            removeFromCart(product.id)
                                         }
                                         className="!text-destructive h-7 w-7 sm:w-10 sm:h-10 xsm:max-sm:w-14 ">
                                         <Trash2 width={18} />
@@ -157,10 +164,10 @@ export default function BasketCard({ product }: { product: ProductWithBase }) {
                 <div className="flex items-center justify-between gap-x-6 mt-6 md:hidden">
                     <div className="flex flex-col">
                         <p className="font-medium text-base sm:text-lg">
-                            {formatMoney(product.discounted_price, "", true, t)}
+                            {formatMoney(price, "", true, t)}
                         </p>
                         <span className="line-through text-sm text-muted-foreground">
-                            {formatMoney(product.price, "", true, t)}
+                            {formatMoney(price, "", true, t)}
                         </span>
                     </div>
                     <div className="flex xsm:max-sm:max-w-[21vh] items-center gap-2 sm:max-md:gap-1 xsm:max-sm:gap-1">
@@ -191,7 +198,7 @@ export default function BasketCard({ product }: { product: ProductWithBase }) {
                         <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => removeFromCart(product.id, true)}
+                            onClick={() => removeFromCart(product.id)}
                             className="!text-destructive !min-w-8 !w-8 sm:w-10 h-8">
                             <Trash2 width={18} />
                         </Button>

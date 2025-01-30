@@ -1,15 +1,12 @@
 import { useUser } from "@/constants/useUser"
+import useCart from "@/hooks/useCart"
 import { useConfirm } from "@/hooks/useConfirm"
-import { useStore } from "@/hooks/useStore"
 import { useQueryClient } from "@tanstack/react-query"
 import { Link, useLocation, useNavigate } from "@tanstack/react-router"
 import {
     GalleryVerticalEnd,
-    LogIn,
-    LogOut,
     Settings,
     ShoppingCart,
-    User,
     Warehouse,
 } from "lucide-react"
 import { useTranslation } from "react-i18next"
@@ -18,19 +15,13 @@ import ParamInput from "../param/input"
 import CategoryDialog from "../shared/category-dialog"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
 import TooltipLayout from "./tooltip-layout"
 
 export default function Header() {
-    const { store } = useStore<{ name: string }[]>("baskets")
     const confirm = useConfirm()
     const { username, is_admin, is_best_client } = useUser()
     const { t } = useTranslation()
+    const { cart } = useCart()
 
     const queryClient = useQueryClient()
     const navigate = useNavigate()
@@ -101,9 +92,9 @@ export default function Header() {
                                         icon={<ShoppingCart width={18} />}
                                         size={"icon"}
                                         variant="ghost"></Button>
-                                    {!!store?.length && store?.length >= 1 && (
+                                    {!!cart?.length && cart?.length >= 1 && (
                                         <Badge className="absolute -top-4 -right-2 z-20 overflow-visible">
-                                            {store?.length}
+                                            {cart?.length}
                                         </Badge>
                                     )}
                                 </Link>
@@ -126,7 +117,7 @@ export default function Header() {
                                     </Link>
                                 </TooltipLayout>
                             )}
-                            {username ?
+                            {/* {username ?
                                 <DropdownMenu>
                                     <TooltipLayout text={username}>
                                         <DropdownMenuTrigger
@@ -179,7 +170,7 @@ export default function Header() {
                                         </Link>
                                     </TooltipLayout>
                                 )
-                            }
+                            } */}
                             <div className="ml-1">
                                 <LanguageSwitcher />
                             </div>

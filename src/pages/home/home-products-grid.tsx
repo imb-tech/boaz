@@ -1,30 +1,39 @@
-import ProductCard from "@/components/shared/product-card"
-import { Button } from "@/components/ui/button"
-import Loader from "@/components/ui/loader"
+import ProductCard2 from "@/components/shared/product-card/product-card"
 import { useUser } from "@/constants/useUser"
-import { useInfiniteGet } from "@/hooks/useInfiniteGet"
+import { useGet } from "@/hooks/useGet"
 import LoadingSkeleton from "@/layouts/loading-skeleton"
-import { Link, useSearch } from "@tanstack/react-router"
-import { ChevronDown, ChevronRight } from "lucide-react"
+import { Link } from "@tanstack/react-router"
+import { ChevronRight } from "lucide-react"
 import { Fade } from "react-awesome-reveal"
 import { useTranslation } from "react-i18next"
 
 type Props = {
     title: string
-    url: string
     link: string
+    limit?: number
+    offset?: number
+}
+
+type ProductsResponse = {
+    count: number
+    products: Product2[]
 }
 
 export default function HomeProductsGrid({
     title = "Mahsulotlar",
-    url,
     link,
+    limit = 12,
+    offset = 0,
 }: Props) {
     const { t } = useTranslation()
-    const search = useSearch({ from: "__root__" })
 
-    const { data, hasNextPage, isFetchingNextPage, fetchNextPage, isLoading } =
-        useInfiniteGet<Product>(url, search)
+    const { data, isLoading } = useGet<ProductsResponse | undefined>(
+        "products",
+        {
+            limit,
+            offset,
+        },
+    )
 
     const { username } = useUser()
 
@@ -41,9 +50,9 @@ export default function HomeProductsGrid({
                     <ChevronRight className="animate-mover " />
                 </Link>
                 <div className="w-full grid xmd:grid-cols-2 md:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-5 gap-2 sm:gap-4">
-                    {data?.map((d, i: number) => (
+                    {data?.products?.map((d, i: number) => (
                         <Fade damping={0.5} key={i}>
-                            <ProductCard
+                            <ProductCard2
                                 p={d}
                                 key={i}
                                 is_authenticated={!!username}
@@ -51,7 +60,7 @@ export default function HomeProductsGrid({
                         </Fade>
                     ))}
                 </div>
-                {isFetchingNextPage && (
+                {/* {isFetchingNextPage && (
                     <div className="w-full flex justify-center py-4">
                         <Loader size="responsive" />
                     </div>
@@ -66,7 +75,7 @@ export default function HomeProductsGrid({
                             {t("Ko'proq ko'rsatish")} <ChevronDown width={18} />
                         </Button>
                     </div>
-                )}
+                )} */}
             </div>
         </LoadingSkeleton>
     )
