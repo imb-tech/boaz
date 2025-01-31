@@ -1,111 +1,87 @@
-import { useLanguage } from "@/components/custom/languageContext"
 import { ProductBreadcrumb } from "@/components/shared/breadcrumb"
 import { useGet } from "@/hooks/useGet"
 import Loading from "@/layouts/loading"
-import { useNavigate, useParams, useSearch } from "@tanstack/react-router"
+import { useParams } from "@tanstack/react-router"
+import DOMPurify from "dompurify"
 import { useEffect, useMemo } from "react"
 import HomeProductsGrid from "../home/home-products-grid"
 import ProductCarousel from "./carousel"
-import RightOptions from "./options"
 import RightInfo from "./right-info"
+
+type ProductsResponse = {
+    count: number
+    products: Product2[]
+}
 
 export default function Product() {
     const params = useParams({ from: "/_main/products/$product" })
-    const search: any = useSearch({ from: "/_main/products/$product" })
-    const navigate = useNavigate()
 
-    const { data: d, isLoading } = useGet<Product>(
-        `base-product/` + params.product + "/",
-        undefined,
+    const { data, isLoading } = useGet<ProductsResponse | undefined>(
+        `products`,
         {
-            enabled: !!params.product,
+            limit: 1,
+            product_id: params?.product,
         },
     )
 
-    const { name } = useLanguage()
+    const product = useMemo(() => {
+        return data?.products?.[0]
+    }, [data])
+
+    const sanitizedHtml = useMemo(() => {
+        return DOMPurify.sanitize(product?.description || ``)
+    }, [product])
 
     const slides = useMemo(() => {
-        if ((d?.products?.length || 0) > 0) {
-            const imgs =
-                d?.colors
-                    ?.filter((d) =>
-                        search.color ? d.id === search.color : true,
-                    )
-                    ?.map((d) => d.images) || []
-            return [
-                !search.color && d?.main_image,
-                ...(imgs?.flatMap((d) => d.map((d) => d.image)) || []),
-            ]?.filter((d) => !!d)
-        } else {
-            return [d?.main_image]
-        }
-    }, [d, search.color])
-
-    const minPriceProduct = useMemo(() => {
-        return d?.products?.sort((a, b) => a.price - b.price)[0]
-    }, [d])
+        return product?.photos
+            ?.sort((a, b) => Number(a.is_main) - Number(b.is_main))
+            ?.map((p) => p.photo_url)
+    }, [product])
 
     useEffect(() => {
         window.scrollTo(0, 0)
-        if (
-            d?.colors &&
-            d?.colors.length > 1 &&
-            d?.colors?.[0]?.images?.length
-        ) {
-            navigate({
-                search: {
-                    color: minPriceProduct?.color,
-                    // option: minPriceProduct?.option,
-                } as any,
-            })
-        } else {
-            navigate({
-                search: {
-                    color: undefined,
-                    option: undefined,
-                } as any,
-            })
-        }
-    }, [d])
+    }, [params?.product])
 
     return (
         <Loading loading={isLoading}>
-            {!!d && (
+            {!!product && (
                 <div className="space-y-4 sm:space-y-4">
                     <ProductBreadcrumb
                         items={[
                             { name: "Mahsulotlar", href: "/products" },
-                            { name: d.name },
+                            { name: product.name },
                         ]}
                     />
                     <h2 className="text-lg sm:text-xl md:text-2xl font-medium">
-                        {d.name}{" "}
+                        {product.name}{" "}
                     </h2>
-                    <div className="flex flex-col lg:flex-row gap-4 w-full">
+                    <div className="flex flex-col lg:flex-row gap-3 w-full">
                         <ProductCarousel slides={(slides as any) || []} />
                         <div className="h-full w-full lg:max-w-md flex flex-col md:flex-row lg:flex-col items-start gap-4 sm:gap-6">
-                            {!!d?.colors && d?.colors?.length > 0 && (
+                            {/* {!!d?.colors && d?.colors?.length > 0 && (
                                 <RightOptions
                                     data={d?.colors as Product["colors"]}
                                     attr={d?.attr}
                                     products={d?.products}
                                 />
-                            )}
-                            <RightInfo d={d as Product} />
-                            {d?.colors && d?.colors.length < 2 && (
+                            )} */}
+                            <RightInfo d={product} />
+                            {/* {product?.description && (
                                 <div className="p-3 bg-background rounded-xl w-full h-full">
                                     <p className="text-sm sm:text-base text-muted-foreground">
-                                        {d.description}
+                                        {product?.description}
                                     </p>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </div>
-                    {d?.colors && d?.colors.length > 1 && (
+                    {product?.description && (
                         <div className="p-8 bg-background rounded-3xl">
-                            <p className="text-sm sm:text-base text-muted-foreground">
-                                {d.description}
-                            </p>
+                            <p
+                                className="text-sm sm:text-base text-muted-foreground"
+                                dangerouslySetInnerHTML={{
+                                    __html: sanitizedHtml,
+                                }}></p>
                         </div>
                     )}
                 </div>
@@ -113,7 +89,6 @@ export default function Product() {
 
             <div className="mt-5">
                 <HomeProductsGrid
-                    url="base-product/?highest_discount=true"
                     title="O'xshash mahsulotlar"
                     link="highest-discount"
                 />

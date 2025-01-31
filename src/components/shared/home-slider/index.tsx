@@ -25,7 +25,7 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
                             <img
                                 src={image}
                                 alt={`Carousel ${index}`}
-                                className="h-64 min-w-[300px] rounded-lg object-cover"
+                                className="h-64 min-w-[300px] rounded-3xl object-cover"
                             />
                         </div>
                     ))}
@@ -34,12 +34,12 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
                 <div className="absolute top-0 py-12 animate-marquee2 whitespace-nowrap flex">
                     {images.map((image, index) => (
                         <div
-                            className={`text-4xl mx-4 ${index % 2 === 0 ? "transform: rotate-2" : "transform: -rotate-2"} transition-all duration-300 hover:rotate-0`}
+                            className={`text-4xl mx-4 ${index % 2 === 1 ? "transform: rotate-2" : "transform: -rotate-2"} transition-all duration-300 hover:rotate-0`}
                             key={index}>
                             <img
                                 src={image}
                                 alt={`Carousel ${index}`}
-                                className="h-64 min-w-[300px] rounded-lg object-cover"
+                                className="h-64 min-w-[300px] rounded-3xl object-cover"
                             />
                         </div>
                     ))}

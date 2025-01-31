@@ -43,16 +43,16 @@ export default function ProductCarousel({
     }, [emblaMainApi, onSelect])
 
     return (
-        <div className="flex flex-col-reverse md:flex-row items-start gap-5 w-full h-full">
+        <div className="flex flex-col-reverse md:flex-row items-start gap-2 w-full h-full">
             {slides?.length >= 2 && (
                 <Carousel
                     className="h-[70px] md:h-[490px] md:!w-[70px]"
                     opts={{ dragFree: true, align: "start" }}>
-                    <CarouselContent className="flex flex-row md:flex-col h-[490px] my-1 mx-0.5">
+                    <CarouselContent className="flex flex-row md:flex-col h-[490px] my-1 mx-0.5 gap-2">
                         {slides?.map((m, i) => (
                             <CarouselItem
                                 key={i}
-                                className="basis-auto !h-20 pt-2 cursor-pointer"
+                                className="basis-auto !h-18 cursor-pointer px-0"
                                 onClick={() => onThumbClick(i)}>
                                 <div
                                     className={cn(
@@ -64,7 +64,7 @@ export default function ProductCarousel({
                                         src={m}
                                         alt={`Product image ${i}`}
                                         contain
-                                        className="h-[90%] w-full max-w-full object-contain"
+                                        className="h-[70%] w-full max-w-full object-contain"
                                     />
                                 </div>
                             </CarouselItem>
@@ -90,7 +90,7 @@ export default function ProductCarousel({
                                         src={m}
                                         alt={`Product image ${i}`}
                                         contain
-                                        className="h-[100%] w-full max-w-full object-contain"
+                                        className="h-[70%] w-full max-w-full object-contain"
                                     />
                                 </div>
                             </CarouselItem>

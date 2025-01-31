@@ -1,5 +1,4 @@
 import { DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
-import { useGet } from "@/hooks/useGet"
 import Loading from "@/layouts/loading"
 import { useNavigate, useSearch } from "@tanstack/react-router"
 import { useEffect, useMemo } from "react"
@@ -7,16 +6,14 @@ import ProductCarousel from "./carousel"
 import RightInfo from "./detail-right-info"
 import RightOptions from "./detail-right-options"
 
-export default function DetailModalContent({ product }: { product: Product }) {
+export default function DetailModalContent({
+    product: d,
+    isLoading,
+}: {
+    product: Product
+    isLoading: boolean
+}) {
     const search: any = useSearch({ strict: false })
-
-    const { data: d, isLoading } = useGet<Product>(
-        `base-product/` + product?.id + "/",
-        undefined,
-        {
-            enabled: !!product,
-        },
-    )
 
     const slides = useMemo(() => {
         if ((d?.products?.length || 0) > 0) {
