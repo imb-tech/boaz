@@ -28,7 +28,7 @@ export default function CategoryDialog({ children }: Props) {
 
     React.useEffect(() => {
         post("", {
-            path: "v2/category?limit=10&page=1&search=&is_deleted=false",
+            path: "v2/category?limit=10&is_deleted=false",
         })
     }, [])
 
