@@ -74,7 +74,7 @@ export default function RightInfo({ d }: { d: Product }) {
                 ]
         setStore(updatedBaskets || [])
         setInputValue(1)
-        !isInBasket && toast.success(d.name + `${"savatchaga qo'shildi"}`)
+        !isInBasket && toast.success(d.name + `${t("savatchaga qo'shildi")}`)
     }
 
     const handleQuantity = (action: "increase" | "decrease") => {

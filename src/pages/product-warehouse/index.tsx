@@ -104,7 +104,6 @@ export default function ProductWarehouse() {
 
             <div className="mt-5">
                 <HomeProductsGrid
-                    url="base-product/?highest_discount=true"
                     title="O'xshash mahsulotlar"
                     link="highest-discount"
                 />

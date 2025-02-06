@@ -19,7 +19,7 @@ import TooltipLayout from "./tooltip-layout"
 
 export default function Header() {
     const confirm = useConfirm()
-    const { username, is_admin, is_best_client } = useUser()
+    const { is_admin, is_best_client } = useUser()
     const { t } = useTranslation()
     const { cart } = useCart()
 
@@ -50,7 +50,7 @@ export default function Header() {
                         </h2>
                     </Link>
                     <div className="flex justify-between gap-1 md:gap-0 overflow-x-auto p-0.5 w-full">
-                        <div className="flex items-center gap-2 w-full">
+                        <div className="flex items-center gap-2 w-full max-w-3xl">
                             <CategoryDialog>
                                 <Button
                                     icon={<GalleryVerticalEnd width={18} />}
@@ -61,7 +61,9 @@ export default function Header() {
                                 </Button>
                             </CategoryDialog>
 
-                            {pathname !== "/auth" && <ParamInput />}
+                            {pathname !== "/auth" && (
+                                <ParamInput paramName="search" />
+                            )}
                         </div>
 
                         <div className="flex flex-shrink-0 pl-2 gap-2">
@@ -81,6 +83,11 @@ export default function Header() {
                                     </Button>
                                 )}
                             </Link>
+                            <div className="h-full items-center hidden md:flex">
+                                <a href="tel:+998950803001" className="text-sm">
+                                    +998 95 080 30 01
+                                </a>
+                            </div>
                             <div className="relative">
                                 <Link
                                     to="/basket"
@@ -117,6 +124,7 @@ export default function Header() {
                                     </Link>
                                 </TooltipLayout>
                             )}
+
                             {/* {username ?
                                 <DropdownMenu>
                                     <TooltipLayout text={username}>

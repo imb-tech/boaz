@@ -89,8 +89,8 @@ export const theme = {
             "accordion-down": "accordion-down 0.2s ease-out",
             "accordion-up": "accordion-up 0.2s ease-out",
             mover: "mover 1s infinite ease-in-out",
-            marquee: "marquee 25s linear infinite",
-            marquee2: "marquee2 25s linear infinite",
+            marquee: "marquee 60s linear infinite",
+            marquee2: "marquee2 60s linear infinite",
         },
         screens: {
             sm: "400px",

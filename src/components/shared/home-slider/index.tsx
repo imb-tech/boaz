@@ -1,26 +1,40 @@
+import Image1 from "@/assets/media/1.jpg"
+import Image10 from "@/assets/media/10.jpg"
+import Image2 from "@/assets/media/2.jpg"
+import Image3 from "@/assets/media/3.jpg"
+import Image4 from "@/assets/media/4.jpg"
+import Image5 from "@/assets/media/5.jpg"
+import Image6 from "@/assets/media/6.jpg"
+import Image7 from "@/assets/media/7.jpg"
+import Image8 from "@/assets/media/8.jpg"
+import Image9 from "@/assets/media/9.jpg"
 import React from "react"
 
 type CarouselProps = {
-    images: string[]
+    images?: string[] | undefined
 }
 
 const Carousel: React.FC<CarouselProps> = ({ images }) => {
+    const defaultImages = [
+        Image1,
+        Image2,
+        Image3,
+        Image4,
+        Image5,
+        Image6,
+        Image7,
+        Image8,
+        Image9,
+        Image10,
+    ]
+
     return (
         <div>
-            <div className="max-w-4xl mx-auto text-center">
-                <h3 className="text-3xl">Title title title</h3>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Facere quae autem fugit reiciendis facilis tempora possimus
-                    porro vitae. Dicta aliquam fuga numquam, modi obcaecati
-                    neque minus. Nostrum eius facere magni.
-                </p>
-            </div>
             <div className="relative flex overflow-x-hidden">
                 <div className="py-12 animate-marquee whitespace-nowrap flex">
-                    {images.map((image, index) => (
+                    {(images || defaultImages)?.map((image, index) => (
                         <div
-                            className={`text-4xl mx-4 ${index % 2 === 0 ? "transform: rotate-2" : "transform: -rotate-2"} transition-all duration-300 hover:rotate-0`}
+                            className={`text-4xl mx-4 transition-all duration-300`}
                             key={index}>
                             <img
                                 src={image}
@@ -32,9 +46,9 @@ const Carousel: React.FC<CarouselProps> = ({ images }) => {
                 </div>
 
                 <div className="absolute top-0 py-12 animate-marquee2 whitespace-nowrap flex">
-                    {images.map((image, index) => (
+                    {(images || defaultImages)?.map((image, index) => (
                         <div
-                            className={`text-4xl mx-4 ${index % 2 === 1 ? "transform: rotate-2" : "transform: -rotate-2"} transition-all duration-300 hover:rotate-0`}
+                            className={`text-4xl mx-4 transition-all duration-300`}
                             key={index}>
                             <img
                                 src={image}

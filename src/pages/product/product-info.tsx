@@ -3,7 +3,6 @@ import { Input } from "@/components/ui/input"
 import { shop_id } from "@/constants/api-endpoints"
 import { useStore } from "@/hooks/useStore"
 import { formatMoney } from "@/lib/format-money"
-import { cn } from "@/lib/utils"
 import { Link, useSearch } from "@tanstack/react-router"
 import {
     Check,
@@ -12,13 +11,12 @@ import {
     PlusIcon,
     ShoppingBag,
     ShoppingCart,
-    X,
 } from "lucide-react"
 import { useMemo, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 
-export default function RightInfo({ d }: { d: Product2 }) {
+export default function ProductInfo({ d }: { d: Product2 }) {
     const [inputValue, setInputValue] = useState(1)
     const { store, setStore } = useStore<Product[] | any[]>("cart")
     const { t } = useTranslation()
@@ -144,21 +142,14 @@ export default function RightInfo({ d }: { d: Product2 }) {
             <div className="w-full space-y-4">
                 <div className="flex items-center gap-2">
                     <Button
-                        icon={
-                            count > 1 ? <Check width={16} /> : <X width={16} />
-                        }
+                        icon={<Check width={16} />}
                         variant="secondary"
-                        className={cn(
-                            "bg-destructive/20 w-8 h-8",
-                            count > 1 && "bg-primary/20",
-                        )}
+                        className="!bg-primary/20 w-8 h-8"
                     />
                     <p>
-                        {count > 1 ?
-                            t("in_stock", {
-                                count,
-                            })
-                        :   t("tugagan")}
+                        {t("in_stock", {
+                            count,
+                        })}
                     </p>
                 </div>
                 <div className="flex items-center gap-2">

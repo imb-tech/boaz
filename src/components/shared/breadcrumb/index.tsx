@@ -5,6 +5,7 @@ import {
     BreadcrumbList,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
+import { useTranslation } from "react-i18next"
 import { Fragment } from "react/jsx-runtime"
 
 type BreadcrumbItem = {
@@ -17,18 +18,19 @@ type Props = {
 }
 
 export function ProductBreadcrumb({ items }: Props) {
+    const { t } = useTranslation()
     return (
         <Breadcrumb>
             <BreadcrumbList>
                 <BreadcrumbItem>
-                    <BreadcrumbLink href="/">Asosiy</BreadcrumbLink>
+                    <BreadcrumbLink href="/">{t("Asosiy")}</BreadcrumbLink>
                 </BreadcrumbItem>
                 {items?.map((item) => (
                     <Fragment key={item.name}>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem key={item.name}>
                             <BreadcrumbLink href={item.href}>
-                                {item.name}
+                                {t(item.name)}
                             </BreadcrumbLink>
                         </BreadcrumbItem>
                     </Fragment>

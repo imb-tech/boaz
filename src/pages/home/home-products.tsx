@@ -6,12 +6,10 @@ import {
 } from "@/components/ui/carousel"
 import { useUser } from "@/constants/useUser"
 import { useGet } from "@/hooks/useGet"
-import { useRequest } from "@/hooks/useRequest"
 import LoadingSkeleton from "@/layouts/loading-skeleton"
 import { Link } from "@tanstack/react-router"
 import Autoplay from "embla-carousel-autoplay"
 import { ChevronRight } from "lucide-react"
-import { useEffect } from "react"
 import { Fade } from "react-awesome-reveal"
 import { useTranslation } from "react-i18next"
 
@@ -20,20 +18,23 @@ type ProductsResponse = {
     products: Product2[]
 }
 
-export default function HomeProducts() {
+export default function HomeProducts({
+    search,
+}: {
+    search?: string | undefined
+}) {
     const { t } = useTranslation()
 
-    const { data, isLoading } = useGet<ProductsResponse | undefined>('products?limit=12&offset=0')
+    const { data, isLoading } = useGet<ProductsResponse | undefined>(
+        `products?limit=12&offset=0${search ? `&search=${search}` : ""}`,
+    )
 
     const { username } = useUser()
 
     return (
         <LoadingSkeleton loading={isLoading} length={5} showTitle>
             <div className="space-y-2 md:space-y-4">
-                <Link
-                    to="/categories/$category"
-                    params={{ category: "most-sold" }}
-                    className="flex items-center gap-4">
+                <Link to="/categories" className="flex items-center gap-4">
                     <h2 className="text-lg sm:text-xl md:text-2xl font-medium">
                         {t("top mahsulotlar")}
                     </h2>
@@ -56,7 +57,7 @@ export default function HomeProducts() {
                         {data?.products &&
                             data?.products?.map((d, i: number) => (
                                 <CarouselItem
-                                    className="basis-full xmd:basis-1/2 md:basis-1/3 xl:basis-1/5 2xl:basis-1/5"
+                                    className="basis-full xsm:basis-1/2 xmd:basis-1/2 md:basis-1/3 xl:basis-1/5 2xl:basis-1/5"
                                     key={i}>
                                     <Fade damping={0.5} key={i}>
                                         <ProductCard2

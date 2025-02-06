@@ -8,6 +8,7 @@ export default function ParamInput({
     className,
     fullWidth,
     clearOthers = true,
+    paramName = "param",
 }: ParamInputProps) {
     const inputRef = useRef<HTMLInputElement>(null)
     const navigate = useNavigate()
@@ -27,17 +28,20 @@ export default function ParamInput({
                     search:
                         clearOthers ?
                             ({
-                                q: newSearchTerm,
-                                search: params.search,
+                                [paramName]: newSearchTerm,
                             } as any)
                         :   {
                                 ...params,
-                                q: newSearchTerm,
+                                [paramName]: newSearchTerm,
                             },
                 })
             } else {
                 navigate({
-                    search: { ...params, q: undefined, search: undefined },
+                    search: {
+                        ...params,
+                        [paramName]: undefined,
+                        search: undefined,
+                    },
                 })
             }
         }, 300)
@@ -52,18 +56,22 @@ export default function ParamInput({
                     search:
                         clearOthers ?
                             ({
-                                q: searchValue,
+                                [paramName]: searchValue,
                                 search: searchValue,
                             } as any)
                         :   {
                                 ...params,
-                                q: searchValue,
+                                [paramName]: searchValue,
                                 search: searchValue,
                             },
                 })
             } else {
                 navigate({
-                    search: { ...params, q: undefined, search: undefined },
+                    search: {
+                        ...params,
+                        [paramName]: undefined,
+                        search: undefined,
+                    },
                 })
             }
         }
@@ -111,4 +119,5 @@ interface ParamInputProps {
     className?: ClassNameValue
     fullWidth?: boolean
     clearOthers?: boolean
+    paramName?: string
 }

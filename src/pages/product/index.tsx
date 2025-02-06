@@ -57,7 +57,7 @@ export default function Product() {
                     </h2>
                     <div className="flex flex-col lg:flex-row gap-3 w-full">
                         <ProductCarousel slides={(slides as any) || []} />
-                        <div className="h-full w-full lg:max-w-md flex flex-col md:flex-row lg:flex-col items-start gap-4 sm:gap-6">
+                        <div className="h-full w-full lg:max-w-md flex flex-col md:flex-row lg:flex-col items-start gap-4 sm:gap-3">
                             {/* {!!d?.colors && d?.colors?.length > 0 && (
                                 <RightOptions
                                     data={d?.colors as Product["colors"]}
@@ -65,6 +65,7 @@ export default function Product() {
                                     products={d?.products}
                                 />
                             )} */}
+                            {/* <ProductInfo d={product}/> */}
                             <RightInfo d={product} />
                             {/* {product?.description && (
                                 <div className="p-3 bg-background rounded-xl w-full h-full">
@@ -89,8 +90,8 @@ export default function Product() {
 
             <div className="mt-5">
                 <HomeProductsGrid
+                    search={data?.products?.[0].name}
                     title="O'xshash mahsulotlar"
-                    link="highest-discount"
                 />
             </div>
         </Loading>

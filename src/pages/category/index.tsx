@@ -1,9 +1,11 @@
+import EmptyBox from "@/components/shared/initial-data-box/empty-box"
 import ProductCard2 from "@/components/shared/product-card/product-card"
 import { useUser } from "@/constants/useUser"
 import { useGet } from "@/hooks/useGet"
 import Loading from "@/layouts/loading"
 import { useSearch } from "@tanstack/react-router"
 import { Fade } from "react-awesome-reveal"
+import { useTranslation } from "react-i18next"
 import Filter from "./filter"
 
 type ProductsResponse = {
@@ -13,15 +15,11 @@ type ProductsResponse = {
 
 export default function Category() {
     const { parent_category } = useSearch({ from: "/_main/categories/" })
+    const { t } = useTranslation()
 
-    const { data, isLoading } = useGet<ProductsResponse>(
-        "products",
-        {
-            category_id: parent_category,
-        },
-    )
-
-    console.log(data)
+    const { data, isLoading } = useGet<ProductsResponse>("products", {
+        category_id: parent_category,
+    })
 
     // const { data: categories } =
     //     useGet<CategoryWithChildren[]>("parent-category/")
@@ -83,9 +81,7 @@ export default function Category() {
                                     ))}
                                 </div>
                             :   <div className="w-full flex justify-center py-10">
-                                    <p className="text-muted-foreground">
-                                        ma'lumot topilmadi
-                                    </p>
+                                    <EmptyBox />
                                 </div>
                             }
                             {/* <div

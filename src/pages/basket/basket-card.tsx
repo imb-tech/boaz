@@ -10,10 +10,10 @@ import { useMemo, useRef } from "react"
 
 import { Input } from "@/components/ui/input"
 import useCart from "@/hooks/useCart"
+import { Link } from "@tanstack/react-router"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
-
-const id = "fac0d3fd-4d70-4082-88f4-2da77752f071"
+import { shop_id } from "@/constants/api-endpoints"
 
 export default function BasketCard({ product }: { product: CartItem }) {
     const plugin = useRef(Autoplay({ delay: 1000 }))
@@ -61,7 +61,7 @@ export default function BasketCard({ product }: { product: CartItem }) {
 
     const price = useMemo(() => {
         return (
-            product.shop_prices?.find((p) => p.shop_id === id)?.retail_price ||
+            product.shop_prices?.find((p) => p.shop_id === shop_id)?.retail_price ||
             0
         )
     }, [product])
@@ -85,9 +85,11 @@ export default function BasketCard({ product }: { product: CartItem }) {
                         />
                     </SeeInView>
                     <div className="w-full space-y-2">
-                        <h3 className="text-base sm:text-lg font-medium">
-                            {product.name}
-                        </h3>
+                        <Link to={`/products/${product.id}`}>
+                            <h3 className="text-base sm:text-lg font-medium">
+                                {product.name}
+                            </h3>
+                        </Link>
                         <div className="flex items-center justify-between">
                             <div className="flex flex-col">
                                 <div className="flex items-center gap-2">

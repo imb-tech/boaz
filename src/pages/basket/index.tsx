@@ -10,8 +10,7 @@ import { Fade } from "react-awesome-reveal"
 import { useTranslation } from "react-i18next"
 import { toast } from "sonner"
 import BasketCard from "./basket-card"
-
-const id = "fac0d3fd-4d70-4082-88f4-2da77752f071"
+import { shop_id } from "@/constants/api-endpoints"
 
 export default function Basket() {
     const { setStore } = useStore<CartItem[]>("cart")
@@ -24,7 +23,7 @@ export default function Basket() {
         cart?.reduce(
             (acc, item) =>
                 acc +
-                (item.shop_prices?.find((p) => p.shop_id === id)
+                (item.shop_prices?.find((p) => p.shop_id === shop_id)
                     ?.retail_price || 0) *
                     (item.count || 1),
             0,
@@ -35,7 +34,7 @@ export default function Basket() {
             cart?.reduce(
                 (acc, item) =>
                     acc +
-                    (item.shop_prices?.find((p) => p.shop_id === id)
+                    (item.shop_prices?.find((p) => p.shop_id === shop_id)
                         ?.retail_price || 0) *
                         (item.count || 1),
                 0,

@@ -2,16 +2,17 @@ import ProductCard2 from "@/components/shared/product-card/product-card"
 import { useUser } from "@/constants/useUser"
 import { useGet } from "@/hooks/useGet"
 import LoadingSkeleton from "@/layouts/loading-skeleton"
-import { Link } from "@tanstack/react-router"
+import { Link, useSearch } from "@tanstack/react-router"
 import { ChevronRight } from "lucide-react"
 import { Fade } from "react-awesome-reveal"
 import { useTranslation } from "react-i18next"
 
 type Props = {
     title: string
-    link: string
+    link?: string
     limit?: number
     offset?: number
+    search?: string | undefined
 }
 
 type ProductsResponse = {
@@ -21,17 +22,21 @@ type ProductsResponse = {
 
 export default function HomeProductsGrid({
     title = "Mahsulotlar",
-    link,
+    link = '',
     limit = 12,
     offset = 0,
+    search,
 }: Props) {
     const { t } = useTranslation()
+
+    const searchQuery = useSearch({ from: "__root__" })
 
     const { data, isLoading } = useGet<ProductsResponse | undefined>(
         "products",
         {
             limit,
             offset,
+            search,
         },
     )
 
