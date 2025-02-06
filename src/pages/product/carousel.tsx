@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/carousel"
 import { cn } from "@/lib/utils"
 import { useCallback, useEffect, useState } from "react"
+import DefaultImage from "@/assets/default-image.svg"
 
 export default function ProductCarousel({
     slides,
@@ -61,7 +62,7 @@ export default function ProductCarousel({
                                             "ring-2 ring-primary",
                                     )}>
                                     <CustomImage
-                                        src={m}
+                                        src={m || DefaultImage}
                                         alt={`Product image ${i}`}
                                         contain
                                         className="h-[70%] w-full max-w-full object-contain"
@@ -87,7 +88,7 @@ export default function ProductCarousel({
                                         "w-full h-full flex items-center justify-center object-cover rounded-xl bg-background",
                                     )}>
                                     <CustomImage
-                                        src={m}
+                                        src={m || DefaultImage}
                                         alt={`Product image ${i}`}
                                         contain
                                         className="h-[70%] w-full max-w-full object-contain"
@@ -104,7 +105,7 @@ export default function ProductCarousel({
                         "w-full h-[520px] flex items-center justify-center object-cover rounded-xl bg-background",
                     )}>
                     <CustomImage
-                        src={slides[0]}
+                        src={slides[0] || DefaultImage}
                         alt={`Product image ${0}`}
                         contain
                         className="h-2/3 w-full max-w-full object-contain"

@@ -114,7 +114,8 @@ export default function RightInfo({ d }: { d: Product2 }) {
             ?.active_measurement_value || 0
 
     return (
-        <div className="flex flex-col justify-between items-start gap-6 md:gap-8 w-full h-full lg:max-w-md p-4 sm:p-6 rounded-xl relative bg-white">
+        <div className="flex flex-col justify-between items-start gap-6 md:gap-2 w-full h-full lg:max-w-md p-4 sm:p-6 rounded-xl relative bg-white">
+            <p>{t('Mahsulot narxi')}</p>
             {lastPrice - discountedPrice > 0 && (
                 <p className="text-xs bg-primary text-white px-4 py-1 absolute top-0 right-0 translate-x-[1px] -translate-y-0.5 rounded-bl-xl rounded-tr-xl">
                     -
@@ -124,7 +125,7 @@ export default function RightInfo({ d }: { d: Product2 }) {
                     %
                 </p>
             )}
-            <div className="w-full">
+            <div className="w-full text-primary">
                 <div className="flex items-center gap-4 w-full justify-between">
                     <div className="flex items-center gap-2 justify-between w-full">
                         <h2 className="text-lg sm:text-xl md:text-2xl font-semibold">
@@ -141,7 +142,7 @@ export default function RightInfo({ d }: { d: Product2 }) {
                     {productDescription}{" "}
                 </p> */}
             </div>
-            <div className="w-full space-y-4">
+            <div className="w-full space-y-4 mt-3">
                 <div className="flex items-center gap-2">
                     <Button
                         icon={

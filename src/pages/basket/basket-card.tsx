@@ -14,6 +14,7 @@ import { Link } from "@tanstack/react-router"
 import { useState } from "react"
 import { useTranslation } from "react-i18next"
 import { shop_id } from "@/constants/api-endpoints"
+import DefaultImage from "@/assets/default-image.svg"
 
 export default function BasketCard({ product }: { product: CartItem }) {
     const plugin = useRef(Autoplay({ delay: 1000 }))
@@ -74,7 +75,7 @@ export default function BasketCard({ product }: { product: CartItem }) {
                         url={product?.main_image_url_full}
                         className="w-max">
                         <CustomImage
-                            src={product?.main_image_url_full}
+                            src={product?.main_image_url_full || DefaultImage}
                             alt="product image"
                             height={120}
                             width={120}

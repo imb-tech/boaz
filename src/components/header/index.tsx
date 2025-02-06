@@ -45,9 +45,14 @@ export default function Header() {
             <header className="flex flex-col backdrop-blur px-2 sm:px-4 xl:container !max-w-[1360px] mx-auto">
                 <div className="flex items-center justify-between md:gap-10 py-1.5 sm:py-3">
                     <Link to="/" className="hidden md:inline">
-                        <h2 className="hidden md:inline text-2xl md:text-3xl xl:text-4xl font-semibold font-[Lobster] text-primary">
-                            Boaz
-                        </h2>
+                        <div className="flex items-center gap-1">
+                            <h2 className="hidden md:inline text-3xl  font-semibold font-[Lobster] text-primary">
+                                Boaz
+                            </h2>
+                            <h2 className="hidden md:inline text-3xl  font-semibold font-[Lobster] text-primary">
+                                Market
+                            </h2>
+                        </div>
                     </Link>
                     <div className="flex justify-between gap-1 md:gap-0 overflow-x-auto p-0.5 w-full">
                         <div className="flex items-center gap-2 w-full max-w-3xl">
