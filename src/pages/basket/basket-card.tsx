@@ -154,7 +154,7 @@ export default function BasketCard({ product }: { product: CartItem }) {
                                         variant="ghost"
                                         size="icon"
                                         onClick={() =>
-                                            removeFromCart(product.id)
+                                            removeFromCart(product.id, true)
                                         }
                                         className="!text-destructive h-7 w-7 sm:w-10 sm:h-10 xsm:max-sm:w-14 ">
                                         <Trash2 width={18} />
@@ -201,7 +201,7 @@ export default function BasketCard({ product }: { product: CartItem }) {
                         <Button
                             variant="ghost"
                             size="icon"
-                            onClick={() => removeFromCart(product.id)}
+                            onClick={() => removeFromCart(product.id, true)}
                             className="!text-destructive !min-w-8 !w-8 sm:w-10 h-8">
                             <Trash2 width={18} />
                         </Button>

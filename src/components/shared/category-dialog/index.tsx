@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/popover"
 import { useRequest } from "@/hooks/useRequest"
 import { cn } from "@/lib/utils"
-import { CategoryWithChildren } from "@/types/category"
+import { mergeSubCategories } from "@/pages/category/filter"
 import { PopoverClose } from "@radix-ui/react-popover"
 import { useNavigate } from "@tanstack/react-router"
 import { ChevronRight } from "lucide-react"
@@ -32,6 +32,11 @@ export default function CategoryDialog({ children }: Props) {
         })
     }, [])
 
+    const categories = React.useMemo(
+        () => mergeSubCategories(categoriesData?.categories || []),
+        [categoriesData],
+    )
+
     const navigate = useNavigate()
 
     return (
@@ -45,7 +50,7 @@ export default function CategoryDialog({ children }: Props) {
                     {/* Categories */}
                     <div className="w-[280px] bg-white rounded-xl">
                         <div className="flex flex-col p-2">
-                            {categoriesData?.categories?.map((category) => (
+                            {categories?.map((category) => (
                                 <PopoverClose key={category.id}>
                                     <div
                                         onMouseEnter={() =>
@@ -91,7 +96,7 @@ export default function CategoryDialog({ children }: Props) {
                                     {selectedCategory.name}
                                 </h3>
                                 <div className="grid grid-cols-2 gap-1">
-                                    {categoriesData?.categories
+                                    {categories
                                         ?.find(
                                             (cat) =>
                                                 cat.id === selectedCategory.id,

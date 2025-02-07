@@ -109,7 +109,7 @@ export default function ProductInfo({ d }: { d: Product2 }) {
 
     const count =
         d?.shop_measurement_values?.find((f) => f.shop_id === shop_id)
-            ?.active_measurement_value || 0
+            ?.total_active_measurement_value || 0
 
     return (
         <div className="flex flex-col justify-between items-start gap-6 md:gap-8 w-full h-full lg:max-w-md p-4 sm:p-6 rounded-xl relative bg-white">

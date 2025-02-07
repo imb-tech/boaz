@@ -56,7 +56,7 @@ export default function Product() {
                         ]}
                     />
                     <h2 className="text-lg sm:text-xl md:text-2xl font-medium">
-                        {product.name}{" "}
+                        {product.name}{" "} {product.sku}
                     </h2>
                     <div className="flex flex-col lg:flex-row gap-3 w-full">
                         <ProductCarousel slides={(slides as any) || []} />

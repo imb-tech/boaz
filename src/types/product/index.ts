@@ -66,7 +66,7 @@ type ProductShopPrice = {
 type ProductShopMeasurementValue = {
     shop_id: string
     shop_name: string
-    active_measurement_value: number
+    total_active_measurement_value: number
 }
 
 type ProductMeasurementUnit = {

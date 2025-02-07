@@ -23,7 +23,7 @@ export default function useCart() {
         setStore(updatedCart.filter((item) => item.count > 0))
     }
 
-    function removeFromCart(id: string) {
+    function removeFromCart(id: string, isAll?: boolean) {
         const updatedCart = store
             ?.map((item) =>
                 item.id === id ?
@@ -32,7 +32,11 @@ export default function useCart() {
             )
             .filter((item) => item.count > 0)
 
-        setStore(updatedCart || [])
+        if (isAll) {
+            setStore([])
+        } else {
+            setStore(updatedCart || [])
+        }
     }
 
     return {

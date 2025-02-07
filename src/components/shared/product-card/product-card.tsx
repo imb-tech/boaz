@@ -37,7 +37,7 @@ function ProductCard2({
     const stock = useMemo(
         () =>
             p?.shop_measurement_values?.find((p) => p.shop_id === shop_id)
-                ?.active_measurement_value || 0,
+                ?.total_active_measurement_value || 0,
         [p],
     )
 
@@ -138,13 +138,13 @@ function ProductCard2({
                         </p>
                     </Link>
                     <div className="flex items-center justify-between pt-0 mt-2">
-                        <Button
+                        {/* <Button
                             variant="secondary"
                             className="text-primary"
                             onClick={toggleBasket}
                             disabled={stock === 0}>
                             {t("Bittada xarid")}
-                        </Button>
+                        </Button> */}
                         <div className="w-max h-max relative -mr-1">
                             {isInBasket && (
                                 <Button

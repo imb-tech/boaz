@@ -8,7 +8,35 @@ import { useRequest } from "@/hooks/useRequest"
 import { cn } from "@/lib/utils"
 import { Link, useNavigate, useSearch } from "@tanstack/react-router"
 import { Check } from "lucide-react"
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useMemo } from "react"
+
+export function mergeSubCategories(categories: CategoryItem[]): CategoryItem[] {
+    if (!categories || categories.length === 0) {
+        return []
+    }
+
+    return categories.map((el) => {
+        const allSubCategories = collectAllSubCategories(el.subRows)
+
+        return {
+            ...el,
+            subRows: allSubCategories,
+        }
+    })
+}
+
+function collectAllSubCategories(
+    subCategories: CategoryItem[],
+): CategoryItem[] {
+    let result: CategoryItem[] = []
+
+    for (const sub of subCategories) {
+        result.push({ ...sub, subRows: [] })
+        result = result.concat(collectAllSubCategories(sub.subRows))
+    }
+
+    return result?.filter((el) => el.name)
+}
 
 type CategoryResponse = {
     count: number
@@ -26,6 +54,12 @@ export default function Filter() {
             path: "v2/category?limit=30",
         })
     }, [])
+
+    const mergedCategories = useMemo(
+        () => mergeSubCategories(categoriesData?.categories || []),
+        [categoriesData],
+    )
+    console.log(mergedCategories)
 
     useEffect(() => {
         getCategories()
@@ -47,7 +81,7 @@ export default function Filter() {
                     } as any,
                 })
             }>
-            {categoriesData?.categories?.map((category) => (
+            {mergedCategories?.map((category) => (
                 <AccordionItem
                     className="border-none mb-2"
                     value={category.id}
@@ -84,9 +118,7 @@ export default function Filter() {
                                     className: "text-primary bg-gray-50",
                                 }}
                                 key={vendor.id}>
-                                <span className="text-sm">
-                                    {vendor.name}
-                                </span>
+                                <span className="text-sm">{vendor.name}</span>
                                 <Check
                                     width={14}
                                     className={cn(

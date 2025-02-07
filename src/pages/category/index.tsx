@@ -14,11 +14,11 @@ type ProductsResponse = {
 }
 
 export default function Category() {
-    const { parent_category } = useSearch({ from: "/_main/categories/" })
+    const { parent_category, child_category } = useSearch({ from: "/_main/categories/" })
     const { t } = useTranslation()
 
     const { data, isLoading } = useGet<ProductsResponse>("products", {
-        category_id: parent_category,
+        category_id: child_category || parent_category,
     })
 
     // const { data: categories } =
