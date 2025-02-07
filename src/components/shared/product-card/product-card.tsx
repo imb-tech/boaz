@@ -91,7 +91,7 @@ function ProductCard2({
                         className="flex justify-center items-center">
                         <CustomImage
                             key={p.name}
-                            src={p.main_image_url_full || DefaultImage}
+                            src={p.main_image_url || DefaultImage}
                             alt="product image"
                             contain
                             height={200}

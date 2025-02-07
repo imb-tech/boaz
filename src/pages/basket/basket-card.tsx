@@ -72,10 +72,10 @@ export default function BasketCard({ product }: { product: CartItem }) {
             <CardContent className="p-0">
                 <div className="flex items-center gap-4 w-full justify-between">
                     <SeeInView
-                        url={product?.main_image_url_full}
+                        url={product?.main_image_url}
                         className="w-max">
                         <CustomImage
-                            src={product?.main_image_url_full || DefaultImage}
+                            src={product?.main_image_url || DefaultImage}
                             alt="product image"
                             height={120}
                             width={120}

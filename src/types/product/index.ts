@@ -80,7 +80,7 @@ type Product2 = {
     name: string
     description: string
     main_image_url: string
-    main_image_url_full: string
+    main_image_url_: string
     is_variative: boolean
     parent_id: string
     product_type_id: string
