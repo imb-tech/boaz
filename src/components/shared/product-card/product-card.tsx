@@ -70,7 +70,7 @@ function ProductCard2({
             className="overflow-hidden relative group hover:shadow-none duration-300 rounded-xl border-none"
             key={p.id}>
             <CardContent className="p-0">
-                <Button
+                {/* <Button
                     icon={
                         <Heart
                             className={cn(
@@ -83,7 +83,7 @@ function ProductCard2({
                     className="w-7 h-7 sm:w-10 sm:h-10 absolute top-2 right-2 z-20 bg-secondary/60 rounded-full"
                     disabled={isPending}
                     onClick={toggleLiked}
-                />
+                /> */}
                 <div className="relative w-full h-40 sm:h-[200px] flex items-center justify-center">
                     {xit && <XitBadge className="absolute top-2 left-2" />}
                     <Link
