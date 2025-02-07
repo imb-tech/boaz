@@ -1,11 +1,13 @@
 import {
     Accordion,
+    AccordionContent,
     AccordionItem,
     AccordionTrigger,
 } from "@/components/ui/accordion"
 import { useRequest } from "@/hooks/useRequest"
 import { cn } from "@/lib/utils"
-import { useNavigate, useSearch } from "@tanstack/react-router"
+import { Link, useNavigate, useSearch } from "@tanstack/react-router"
+import { Check } from "lucide-react"
 import { useCallback, useEffect } from "react"
 
 type CategoryResponse = {
@@ -67,8 +69,8 @@ export default function Filter() {
                             {category.name}
                         </div>
                     </AccordionTrigger>
-                    {/* <AccordionContent className="pl-1 pt-1">
-                        {category.children?.map((vendor) => (
+                    <AccordionContent className="pl-1 pt-1">
+                        {category.subRows?.map((vendor) => (
                             <Link
                                 search={{
                                     ...search,
@@ -95,7 +97,7 @@ export default function Filter() {
                                 />
                             </Link>
                         ))}
-                    </AccordionContent> */}
+                    </AccordionContent>
                 </AccordionItem>
             ))}
         </Accordion>
