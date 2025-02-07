@@ -1,6 +1,16 @@
 import { Link } from "@tanstack/react-router"
 import { Clock4, Phone } from "lucide-react"
 import { useTranslation } from "react-i18next"
+import { Button } from "../ui/button"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "../ui/dialog"
 
 export default function SiteFooter() {
     const { t } = useTranslation()
@@ -37,38 +47,22 @@ export default function SiteFooter() {
                         {t("Foydalanuvchilarga")}
                     </h3>
                     <nav className="flex flex-col space-y-2">
-                        <Link
-                            href="#"
+                        <a
+                            target="_blank"
+                            href="tg://resolve?domain=Alhamdulillah300180"
                             className="hover:underline text-muted-foreground text-sm">
                             {t("Biz bilan bog'lanish")}
-                        </Link>
-                        <Link
-                            href="#"
+                        </a>
+                        <a
+                            target="_blank"
+                            href="tg://resolve?domain=Alhamdulillah300180"
                             className="hover:underline text-muted-foreground text-sm">
                             {t("Savol-Javob")}
-                        </Link>
-                    </nav>
-                </div>
-
-                <div className="space-y-4">
-                    <h3 className="text-md font-semibold">
-                        {t("Tadbirkorlarga")}
-                    </h3>
-                    <nav className="flex flex-col space-y-2">
+                        </a>
                         <Link
-                            href="#"
+                            to="/about-us"
                             className="hover:underline text-muted-foreground text-sm">
-                            {t("Boazda soting")}
-                        </Link>
-                        <Link
-                            href="#"
-                            className="hover:underline text-muted-foreground text-sm">
-                            {t("Sotuvchi kabinetiga kirish")}
-                        </Link>
-                        <Link
-                            href="#"
-                            className="hover:underline text-muted-foreground text-sm">
-                            {t("Topshirish punktini ochish")}
+                            {t("Biz haqimizda")}
                         </Link>
                     </nav>
                 </div>
@@ -84,6 +78,8 @@ export default function SiteFooter() {
                     </p>
                 </div>
             </div>
+
+            <Dialog open></Dialog>
         </footer>
     )
 }

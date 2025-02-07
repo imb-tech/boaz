@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AboutUsImport } from './routes/about-us'
 import { Route as MainImport } from './routes/_main'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as MainIndexImport } from './routes/_main/index'
@@ -30,6 +31,12 @@ import { Route as MainCategoriesCategoryImport } from './routes/_main/categories
 const AdminProductsLazyImport = createFileRoute('/admin/products')()
 
 // Create/Update Routes
+
+const AboutUsRoute = AboutUsImport.update({
+  id: '/about-us',
+  path: '/about-us',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const MainRoute = MainImport.update({
   id: '/_main',
@@ -119,6 +126,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof MainImport
+      parentRoute: typeof rootRoute
+    }
+    '/about-us': {
+      id: '/about-us'
+      path: '/about-us'
+      fullPath: '/about-us'
+      preLoaderRoute: typeof AboutUsImport
       parentRoute: typeof rootRoute
     }
     '/_auth/auth': {
@@ -242,6 +256,7 @@ const MainRouteWithChildren = MainRoute._addFileChildren(MainRouteChildren)
 
 export interface FileRoutesByFullPath {
   '': typeof MainRouteWithChildren
+  '/about-us': typeof AboutUsRoute
   '/auth': typeof AuthAuthRoute
   '/basket': typeof MainBasketRoute
   '/profile': typeof MainProfileRoute
@@ -256,6 +271,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
+  '/about-us': typeof AboutUsRoute
   '/auth': typeof AuthAuthRoute
   '/basket': typeof MainBasketRoute
   '/profile': typeof MainProfileRoute
@@ -272,6 +288,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/_auth': typeof AuthRouteWithChildren
   '/_main': typeof MainRouteWithChildren
+  '/about-us': typeof AboutUsRoute
   '/_auth/auth': typeof AuthAuthRoute
   '/_main/basket': typeof MainBasketRoute
   '/_main/profile': typeof MainProfileRoute
@@ -288,6 +305,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | ''
+    | '/about-us'
     | '/auth'
     | '/basket'
     | '/profile'
@@ -301,6 +319,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | ''
+    | '/about-us'
     | '/auth'
     | '/basket'
     | '/profile'
@@ -315,6 +334,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_auth'
     | '/_main'
+    | '/about-us'
     | '/_auth/auth'
     | '/_main/basket'
     | '/_main/profile'
@@ -331,12 +351,14 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   MainRoute: typeof MainRouteWithChildren
+  AboutUsRoute: typeof AboutUsRoute
   AdminProductsLazyRoute: typeof AdminProductsLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   MainRoute: MainRouteWithChildren,
+  AboutUsRoute: AboutUsRoute,
   AdminProductsLazyRoute: AdminProductsLazyRoute,
 }
 
@@ -352,6 +374,7 @@ export const routeTree = rootRoute
       "children": [
         "/_auth",
         "/_main",
+        "/about-us",
         "/admin/products"
       ]
     },
@@ -372,6 +395,9 @@ export const routeTree = rootRoute
         "/_main/products/$product",
         "/_main/categories/"
       ]
+    },
+    "/about-us": {
+      "filePath": "about-us.tsx"
     },
     "/_auth/auth": {
       "filePath": "_auth/auth.tsx",
