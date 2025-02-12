@@ -12,6 +12,7 @@ export default function AboutUs() {
                     { name: "Biz haqimizda" },
                 ]}
             />
+
             <h1 className="mt-5 text-primary text-xl font-medium">
                 {t("Biz haqimizda")}
             </h1>
