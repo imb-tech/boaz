@@ -1,3 +1,4 @@
+import DefaultImage from "@/assets/default-image.svg"
 import CustomImage from "@/components/custom/image"
 import {
     Carousel,
@@ -7,9 +8,9 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/components/ui/carousel"
+import { useMedia } from "@/hooks/useMedia"
 import { cn } from "@/lib/utils"
 import { useCallback, useEffect, useState } from "react"
-import DefaultImage from "@/assets/default-image.svg"
 
 export default function ProductCarousel({
     slides,
@@ -18,6 +19,7 @@ export default function ProductCarousel({
 }) {
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [emblaMainApi, setEmblaMainApi] = useState<CarouselApi>()
+    const { xs } = useMedia()
 
     const onThumbClick = useCallback(
         (index: number) => {
@@ -47,17 +49,26 @@ export default function ProductCarousel({
         <div className="flex flex-col-reverse md:flex-row items-start gap-2 w-full h-full">
             {slides?.length >= 2 && (
                 <Carousel
-                    className="h-[70px] md:h-[490px] md:!w-[70px]"
-                    opts={{ dragFree: true, align: "start" }}>
-                    <CarouselContent className="flex flex-row md:flex-col h-[490px] my-1 mx-0.5 gap-2">
+                    opts={{
+                        align: "start",
+                        dragFree: true,
+                        containScroll: "trimSnaps",
+                        watchDrag:true
+                    }}
+                    orientation={xs ? "horizontal" : "vertical"}>
+                    <CarouselContent className="max-h-[500px] max-w-[350px] mx-auto">
                         {slides?.map((m, i) => (
                             <CarouselItem
                                 key={i}
-                                className="basis-auto !h-18 cursor-pointer px-0"
+                                className={cn(
+                                    "basis-auto cursor-pointer p-1 flex items-center justify-center",
+                                    i == 0 && "mt-5",
+                                    xs && i == 0 && "mt-0 ml-5",
+                                )}
                                 onClick={() => onThumbClick(i)}>
                                 <div
                                     className={cn(
-                                        " bg-white w-full h-full flex items-center justify-center object-cover rounded-xl overflow-hidden",
+                                        " bg-white !h-16 w-14 object-cover rounded-xl overflow-hidden p-1",
                                         selectedIndex === i &&
                                             "ring-2 ring-primary",
                                     )}>
@@ -65,14 +76,12 @@ export default function ProductCarousel({
                                         src={m || DefaultImage}
                                         alt={`Product image ${i}`}
                                         contain
-                                        className="h-[70%] w-full max-w-full object-contain"
+                                        className="h-full w-full max-w-full object-contain"
                                     />
                                 </div>
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className="absolute top-2 !min-h-6 !max-h-6 !h-6 bg-accent/80" />
-                    <CarouselNext className="absolute bottom-2 !min-h-6 !max-h-6 !h-6 bg-accent/80" />
                 </Carousel>
             )}
             {slides?.length > 1 ?

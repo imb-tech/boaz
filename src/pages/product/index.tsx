@@ -16,16 +16,12 @@ type ProductsResponse = {
 export default function Product() {
     const params = useParams({ from: "/_main/products/$product" })
 
-    const { data, isLoading } = useGet<ProductsResponse | undefined>(
-        `products`,
-        {
-            limit: 1,
-            product_id: params?.product,
-        },
+    const { data, isLoading } = useGet<Product2 | undefined>(
+        `products/${params?.product}`,
     )
 
     const product = useMemo(() => {
-        return data?.products?.[0]
+        return data
     }, [data])
 
     const sanitizedHtml = useMemo(() => {
@@ -34,10 +30,9 @@ export default function Product() {
 
     const slides = useMemo(() => {
         return [
-            product?.main_image_url,
-            ...product?.photos
+            ...(product?.images
                 ?.sort((a, b) => Number(a.is_main) - Number(b.is_main))
-                ?.map((p) => p.photo_url) || [],
+                ?.map((p) => p.image_url) || []),
         ]
     }, [product])
 
@@ -56,7 +51,7 @@ export default function Product() {
                         ]}
                     />
                     <h2 className="text-lg sm:text-xl md:text-2xl font-medium">
-                        {product.name}{" "} {product.sku}
+                        {product.name} {product.sku}
                     </h2>
                     <div className="flex flex-col lg:flex-row gap-3 w-full">
                         <ProductCarousel slides={(slides as any) || []} />
@@ -93,7 +88,7 @@ export default function Product() {
 
             <div className="mt-5">
                 <HomeProductsGrid
-                    search={data?.products?.[0].name}
+                    search={data?.name}
                     title="O'xshash mahsulotlar"
                 />
             </div>
