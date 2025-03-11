@@ -89,8 +89,8 @@ type Product2 = {
     shop_measurement_values: ProductShopMeasurementValue[]
     product_attributes: string[]
     custom_fields: ProductCustomField[] | null
-    photos: {
-        photo_url: string
+    images: {
+        image_url: string
         sequence: number
         is_main: boolean
     }[]
