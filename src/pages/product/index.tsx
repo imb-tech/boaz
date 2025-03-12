@@ -31,7 +31,7 @@ export default function Product() {
     const slides = useMemo(() => {
         return [
             ...(product?.images
-                ?.sort((a, b) => Number(a.is_main) - Number(b.is_main))
+                ?.sort((a, b) => Number(a.sequence_number) - Number(b.sequence_number))
                 ?.map((p) => p.image_url) || []),
         ]
     }, [product])

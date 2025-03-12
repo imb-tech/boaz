@@ -93,6 +93,7 @@ type Product2 = {
         image_url: string
         sequence: number
         is_main: boolean
+        sequence_number: number
     }[]
     categories: string[]
     brand_id: string
